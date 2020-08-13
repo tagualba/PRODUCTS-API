@@ -46,13 +46,10 @@ namespace ProductsAPI.Models
         #region POST
 
   
-        public int Post(BuyRequest request)
+        public void insert(string request)
         {
-            var response =  200;
-            var d = new BuyDataAccess();
-            d.insert(requeset);
-            
-            return response;
+            var b = new Purchases();
+            b.add(reques );
         }
 
         #endregion

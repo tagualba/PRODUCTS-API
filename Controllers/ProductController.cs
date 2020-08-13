@@ -52,7 +52,8 @@ namespace ProductsAPI.Controllers
             var loadProductRequest = JsonSerializer.Deserialize<LoadProductRequest>(request);
             return _productModel.Post(loadProductRequest);
         }
-
+        
+        [HttpPost]
         public int LoadCategory(string request)
         {   
             var loadCategoryRequest = JsonSerializer.Deserialize<LoadCategoryRequest>(request);

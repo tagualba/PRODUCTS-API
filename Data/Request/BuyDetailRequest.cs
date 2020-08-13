@@ -5,6 +5,6 @@ namespace ProductsAPI.Data.Request
 {
     public class BuyDetailRequest
     {
-        
+                
     }
 }
