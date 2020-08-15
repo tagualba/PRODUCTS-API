@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using ProductsAPI.Data.Context.Entitys;
+
 
 namespace ProductsAPI.Data.Context
 {
@@ -15,20 +17,20 @@ namespace ProductsAPI.Data.Context
         {
         }
 
-        public virtual DbSet<Categorys> Categorys { get; set; }
-        public virtual DbSet<Clients> Clients { get; set; }
-        public virtual DbSet<IdentificationsTypes> IdentificationsTypes { get; set; }
-        public virtual DbSet<Orders> Orders { get; set; }
-        public virtual DbSet<PostalCodes> PostalCodes { get; set; }
-        public virtual DbSet<Products> Products { get; set; }
-        public virtual DbSet<Purchases> Purchases { get; set; }
-        public virtual DbSet<PurchasesDetails> PurchasesDetails { get; set; }
-        public virtual DbSet<Recipes> Recipes { get; set; }
-        public virtual DbSet<Resources> Resources { get; set; }
-        public virtual DbSet<States> States { get; set; }
-        public virtual DbSet<StatesOrders> StatesOrders { get; set; }
-        public virtual DbSet<SubCategorys> SubCategorys { get; set; }
-        public virtual DbSet<TypesOrders> TypesOrders { get; set; }
+        public virtual DbSet<CategorysEntity> CategorysEntity { get; set; }
+        public virtual DbSet<ClientsEntity> ClientsEntity { get; set; }
+        public virtual DbSet<IdentificationsTypesEntity> IdentificationsTypesEntity { get; set; }
+        public virtual DbSet<OrdersEntity> OrdersEntity { get; set; }
+        public virtual DbSet<PostalCodesEntity> PostalCodesEntity { get; set; }
+        public virtual DbSet<ProductsEntity> ProductsEntity { get; set; }
+        public virtual DbSet<BuysEntity> BuysEntity { get; set; }
+        public virtual DbSet<BuysDetailsEntity> BuysDetailsEntity { get; set; }
+        public virtual DbSet<RecipesEntity> RecipesEntity { get; set; }
+        public virtual DbSet<ResourcesEntity> ResourcesEntity { get; set; }
+        public virtual DbSet<StatesEntity> StatesEntity { get; set; }
+        public virtual DbSet<StatesOrdersEntity> StatesOrdersEntity { get; set; }
+        public virtual DbSet<SubCategorysEntity> SubCategorysEntity { get; set; }
+        public virtual DbSet<TypesOrdersEntity> TypesOrdersEntity { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -40,11 +42,11 @@ namespace ProductsAPI.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Categorys>(entity =>
+            modelBuilder.Entity<CategorysEntity>(entity =>
             {
                 entity.HasKey(e => e.IdCategory);
 
-                entity.ToTable("categorys", "dbo");
+                entity.ToTable("CategorysEntity", "dbo");
 
                 entity.Property(e => e.IdCategory).HasColumnName("id_category");
 
@@ -55,11 +57,11 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Clients>(entity =>
+            modelBuilder.Entity<ClientsEntity>(entity =>
             {
                 entity.HasKey(e => e.IdClient);
 
-                entity.ToTable("clients", "dbo");
+                entity.ToTable("ClientsEntity", "dbo");
 
                 entity.Property(e => e.IdClient).HasColumnName("id_client");
 
@@ -103,7 +105,7 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<IdentificationsTypes>(entity =>
+            modelBuilder.Entity<IdentificationsTypesEntity>(entity =>
             {
                 entity.HasKey(e => e.IdTypeIdentification);
 
@@ -118,18 +120,18 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Orders>(entity =>
+            modelBuilder.Entity<OrdersEntity>(entity =>
             {
                 entity.HasKey(e => e.IdOrder);
 
-                entity.ToTable("orders", "dbo");
+                entity.ToTable("OrdersEntity", "dbo");
 
                 entity.Property(e => e.IdOrder).HasColumnName("id_order");
 
                 entity.Property(e => e.IdTypeOrder).HasColumnName("id_type_order");
             });
 
-            modelBuilder.Entity<PostalCodes>(entity =>
+            modelBuilder.Entity<PostalCodesEntity>(entity =>
             {
                 entity.HasKey(e => e.IdPostalCode);
 
@@ -155,11 +157,11 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Products>(entity =>
+            modelBuilder.Entity<ProductsEntity>(entity =>
             {
                 entity.HasKey(e => e.IdProduct);
 
-                entity.ToTable("products", "dbo");
+                entity.ToTable("ProductsEntity", "dbo");
 
                 entity.Property(e => e.IdProduct).HasColumnName("id_product");
 
@@ -184,13 +186,13 @@ namespace ProductsAPI.Data.Context
                 entity.Property(e => e.Stock).HasColumnName("stock");
             });
 
-            modelBuilder.Entity<Purchases>(entity =>
+            modelBuilder.Entity<BuysEntity>(entity =>
             {
-                entity.HasKey(e => e.IdPurchase);
+                entity.HasKey(e => e.IdBuy);
 
-                entity.ToTable("purchases", "dbo");
+                entity.ToTable("buy", "dbo");
 
-                entity.Property(e => e.IdPurchase).HasColumnName("id_purchase");
+                entity.Property(e => e.IdBuy).HasColumnName("id_buy");
 
                 entity.Property(e => e.IdClient).HasColumnName("id_client");
 
@@ -205,26 +207,26 @@ namespace ProductsAPI.Data.Context
                     .HasColumnType("date");
             });
 
-            modelBuilder.Entity<PurchasesDetails>(entity =>
+            modelBuilder.Entity<BuysDetailsEntity>(entity =>
             {
-                entity.HasKey(e => e.IdPurchaseDetail);
+                entity.HasKey(e => e.IdBuyDetail);
 
-                entity.ToTable("purchases_details", "dbo");
+                entity.ToTable("BuysEntity_details", "dbo");
 
-                entity.Property(e => e.IdPurchaseDetail).HasColumnName("id_purchase_detail");
+                entity.Property(e => e.IdBuyDetail).HasColumnName("id_buy_detail");
 
                 entity.Property(e => e.IdProduct).HasColumnName("id_product");
 
-                entity.Property(e => e.IdPurchase).HasColumnName("id_purchase");
+                entity.Property(e => e.IdBuy).HasColumnName("id_buy");
 
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
             });
 
-            modelBuilder.Entity<Recipes>(entity =>
+            modelBuilder.Entity<RecipesEntity>(entity =>
             {
                 entity.HasKey(e => e.IdRecipe);
 
-                entity.ToTable("recipes", "dbo");
+                entity.ToTable("RecipesEntity", "dbo");
 
                 entity.Property(e => e.IdRecipe).HasColumnName("id_recipe");
 
@@ -235,11 +237,11 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Resources>(entity =>
+            modelBuilder.Entity<ResourcesEntity>(entity =>
             {
                 entity.HasKey(e => e.IdResource);
 
-                entity.ToTable("resources", "dbo");
+                entity.ToTable("ResourcesEntity", "dbo");
 
                 entity.Property(e => e.IdResource).HasColumnName("id_resource");
 
@@ -250,11 +252,11 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<States>(entity =>
+            modelBuilder.Entity<StatesEntity>(entity =>
             {
                 entity.HasKey(e => e.IdState);
 
-                entity.ToTable("states", "dbo");
+                entity.ToTable("StatesEntity", "dbo");
 
                 entity.Property(e => e.IdState).HasColumnName("id_state");
 
@@ -264,11 +266,11 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<StatesOrders>(entity =>
+            modelBuilder.Entity<StatesOrdersEntity>(entity =>
             {
                 entity.HasKey(e => e.IdStateOrder);
 
-                entity.ToTable("states_orders", "dbo");
+                entity.ToTable("StatesEntity_OrdersEntity", "dbo");
 
                 entity.Property(e => e.IdStateOrder).HasColumnName("id_state_order");
 
@@ -277,11 +279,11 @@ namespace ProductsAPI.Data.Context
                 entity.Property(e => e.IdState).HasColumnName("id_state");
             });
 
-            modelBuilder.Entity<SubCategorys>(entity =>
+            modelBuilder.Entity<SubCategorysEntity>(entity =>
             {
                 entity.HasKey(e => e.IdSubCategory);
 
-                entity.ToTable("sub_categorys", "dbo");
+                entity.ToTable("sub_CategorysEntity", "dbo");
 
                 entity.Property(e => e.IdSubCategory).HasColumnName("id_sub_category");
 
@@ -292,11 +294,11 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<TypesOrders>(entity =>
+            modelBuilder.Entity<TypesOrdersEntity>(entity =>
             {
                 entity.HasKey(e => e.IdTypeOrder);
 
-                entity.ToTable("types_orders", "dbo");
+                entity.ToTable("types_OrdersEntity", "dbo");
 
                 entity.Property(e => e.IdTypeOrder).HasColumnName("id_type_order");
 

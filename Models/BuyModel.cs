@@ -49,8 +49,8 @@ namespace ProductsAPI.Models
         public int Post(BuyRequest request)
         {
             var response =  200;
-            var d = new BuyDataAccess();
-            d.insert(requeset);
+            var d = new BuyDataAccess();            
+            d.insert("");
             
             return response;
         }

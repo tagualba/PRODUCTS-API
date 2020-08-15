@@ -15,6 +15,7 @@ namespace ProductsAPI.Controllers
     [Route("[controller]")]
     public class BuyController : ControllerBase
     {
+        private readonly ILogger<BuyController> _logger;
         private BuyModel _buyModel;
 
         public BuyController(ILogger<BuyController> logger)

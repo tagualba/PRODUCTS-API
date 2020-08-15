@@ -4,37 +4,39 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using ProductsAPI.Data.Request;
-
+using ProductsAPI.Data.Context.Entitys;
+using ProductsAPI.Data.Context;
+ 
 namespace ProductsAPI.Models
 {
-    public class BuyModel
+    public class BuyDataAccess
     {
         
-        public BuyModel()
+        public BuyDataAccess()
         {
         }
 
         #region GET
         
-        public BuyDetailResponse Detail(BuyDetailRequest request)
+        public BuyDetailResponse Detail()
         {
             var response = new BuyDetailResponse();
             return response;
         } 
     
-        public BuySummaryResponse Summary(BuySummaryRequest request)
+        public BuySummaryResponse Summary()
         {
             var response = new BuySummaryResponse();
             return response;
         } 
 
-        public SalesDetailsResponse SalesDetails(SalesDetailsRequest request)
+        public SalesDetailsResponse SalesDetails()
         {
             var response = new SalesDetailsResponse();
             return response;
         } 
 
-        public SalesSummaryResponse SalesSummary(SalesSummaryRequest request)
+        public SalesSummaryResponse SalesSummary()
         {
             var response = new SalesSummaryResponse();
             return response;
@@ -48,8 +50,9 @@ namespace ProductsAPI.Models
   
         public void insert(string request)
         {
-            var b = new Purchases();
-            b.add(reques );
+            var b = new MASFARMACIADEVContext();
+            var buy = new BuysEntity();
+            var res = b.BuysEntity.Add(buy);
         }
 
         #endregion
