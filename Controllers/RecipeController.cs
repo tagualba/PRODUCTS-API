@@ -45,6 +45,7 @@ namespace ProductsAPI.Controllers
         #region POST
         
         [HttpPost]
+        [Route("post")]
         public int Post(string request)
         {
             var loadRecipeRequest = JsonSerializer.Deserialize<LoadRecipeRequest>(request);

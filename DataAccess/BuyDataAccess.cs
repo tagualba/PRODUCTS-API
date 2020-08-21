@@ -47,19 +47,49 @@ namespace ProductsAPI.Models
         
         #region POST
 
-  
-        public void insert(string request)
+        public void Insert(BuyRequest request)
         {
-            var b = new MASFARMACIADEVContext();
-            var buy = new BuysEntity();
-            var res = b.BuysEntity.Add(buy);
+            try
+            {
+                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+                BuysEntity buysEntity = new BuysEntity()
+                {
+                    UploadDate = request.UploadDate,
+                    TotalAmount = request.TotalAmount,
+                    IdClient = request.IdClient,
+                    IdOrder = request.IdOrder
+                };
+                context.BuysEntity.Add(buysEntity);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BuyDataAccess.Insert : ERROR : "+ex.Message);
+                throw;
+            }
+        }
+
+        public void InsertDetail(BuyDetailRequest request)
+        {
+            try
+            {
+                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+                BuysDetailsEntity buysDetailsEntity = new BuysDetailsEntity()
+                {
+                    IdProduct = request.IdProduct,
+                    Quantity = request.Quantity,
+                    IdBuy = request.IdBuy
+                };
+                context.BuysDetailsEntity.Add(buysDetailsEntity);
+                context.SaveChanges();                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BuyDataAccess.InsertDetail : ERROR : "+ex.Message);
+                throw;
+            }
         }
 
         #endregion
-
-
-
-
-
     }
 }

@@ -12,7 +12,7 @@ using System.Text.Json;
 namespace ProductsAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class BuyController : ControllerBase
     {
         private readonly ILogger<BuyController> _logger;
@@ -60,17 +60,21 @@ namespace ProductsAPI.Controllers
         #region POST
 
         [HttpPost]
+        [Route("post")]
         public int Post(string request)
         {
             var buyRequest = JsonSerializer.Deserialize<BuyRequest>(request);
             return _buyModel.Post(buyRequest);
         }
 
+        [HttpPost]
+        [Route("postdetail")]
+        public int PostDetail(string request)
+        {
+            var buyDetailRequest = JsonSerializer.Deserialize<BuyDetailRequest>(request);
+            return _buyModel.PostDetail(buyDetailRequest);
+        }
+
         #endregion
-
-
-
-
-
     }
 }

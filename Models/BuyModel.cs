@@ -48,11 +48,36 @@ namespace ProductsAPI.Models
   
         public int Post(BuyRequest request)
         {
-            var response =  200;
-            var d = new BuyDataAccess();            
-            d.insert("");
-            
-            return response;
+            try
+            {
+                BuyDataAccess _dataAccess = new BuyDataAccess();
+                _dataAccess.Insert(request);
+                //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
+                return 204;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BuyModel.Post : ERROR : "+ex.Message);
+                //Error interno del servidor
+                return 500;
+            }
+        }
+
+        public int PostDetail(BuyDetailRequest request)
+        {
+            try
+            {
+                BuyDataAccess _dataAccess = new BuyDataAccess();
+                _dataAccess.InsertDetail(request);
+                //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
+                return 204;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BuyModel.PostDetail : ERROR : "+ex.Message);
+                //Error interno del servidor
+                return 500;
+            }
         }
 
         #endregion

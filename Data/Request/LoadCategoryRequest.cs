@@ -5,6 +5,6 @@ namespace ProductsAPI.Data.Request
 {
     public class LoadCategoryRequest
     {
-        
+        public string Description { get; set; }
     }
 }

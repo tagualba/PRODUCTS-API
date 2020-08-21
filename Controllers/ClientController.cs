@@ -11,7 +11,7 @@ using System.Text.Json;
 namespace ProductsAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ClientController : ControllerBase
     {
 
@@ -46,6 +46,7 @@ namespace ProductsAPI.Controllers
         #region POST
 
         [HttpPost]
+        [Route("post")]
         public int Post(string request)
         {
             var loadClientRequest = JsonSerializer.Deserialize<LoadClientRequest>(request);
@@ -53,6 +54,7 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost]
+        [Route("loadnewsletter")]
         public int LoadNewsLetter(string request)
         {
             var loadNewsLetterRequest = JsonSerializer.Deserialize<LoadNewsLetterRequest>(request);

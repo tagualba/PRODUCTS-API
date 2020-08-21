@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace ProductsAPI.Data.Request
+namespace ProductsAPI.Data.Context.Entitys
 {
-    public class LoadNewsLetterRequest
+    public partial class NewsletterEntity
     {
+        public int IdNewsletter { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
     }
