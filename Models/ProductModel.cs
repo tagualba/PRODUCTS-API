@@ -23,69 +23,69 @@ namespace ProductsAPI.Models
 
         public ProductResponse GetByID(GetProductRequest request)
         {
-            ProductResponse response = new ProductResponse();
+            ProductResponse productResponse = new ProductResponse();
             try
             {
                 ProductDataAcess _dataAccess = new ProductDataAcess();
-                response = _dataAccess.GetByID(request);
+                productResponse = _dataAccess.GetByID(request);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductModel.GetByID : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return productResponse;
         }
 
-        public getCatalogResponse GetCatalogAll()
+        public GetCatalogResponse GetCatalogAll()
         {   
-            getCatalogResponse response = new getCatalogResponse();
+            GetCatalogResponse getCatalogResponse = new GetCatalogResponse();
             try
             {
                 ProductDataAcess _dataAccess = new ProductDataAcess();
-                response = _dataAccess.GetCatalogAll();
+                getCatalogResponse = _dataAccess.GetCatalogAll();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductModel.GetCatalogAll : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return getCatalogResponse;
         }
 
-        public getCatalogResponse GetCatalogSearchBar(GetCatalogRequest request)
+        public GetCatalogResponse GetCatalogSearchBar(GetCatalogRequest request)
         {   
-            getCatalogResponse response = new getCatalogResponse();
+            GetCatalogResponse getCatalogResponse = new GetCatalogResponse();
             try
             {
                 ProductDataAcess _dataAccess = new ProductDataAcess();
-                response = _dataAccess.GetCatalogSearchBar(request);
+                getCatalogResponse = _dataAccess.GetCatalogSearchBar(request);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductModel.GetCatalogSearchBar : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return getCatalogResponse;
         }
 
-        public getCatalogResponse GetCatalogByFilter(GetCatalogRequest request)
+        public GetCatalogResponse GetCatalogByFilter(GetCatalogRequest request)
         {   
-            getCatalogResponse response = new getCatalogResponse();
+            GetCatalogResponse getCatalogResponse = new GetCatalogResponse();
             try
             {
                 ProductDataAcess _dataAccess = new ProductDataAcess();
                 if (request.IdCategory != 0)
                 {
-                    response = _dataAccess.GetCatalogFilterByCategory(request);
+                    getCatalogResponse = _dataAccess.GetCatalogFilterByCategory(request);
                 }
                 else if (request.IdSubCategory != 0)
                 {
-                    response = _dataAccess.GetCatalogFilterBySubCategory(request);
+                    getCatalogResponse = _dataAccess.GetCatalogFilterBySubCategory(request);
                 }
                 else
                 {
-                    response = _dataAccess.GetCatalogFilterByPrice(request);  
+                    getCatalogResponse = _dataAccess.GetCatalogFilterByPrice(request);  
                 }
             }
             catch (Exception ex)
@@ -93,7 +93,7 @@ namespace ProductsAPI.Models
                 Console.WriteLine("ProductModel.GetCatalogByFilter : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return getCatalogResponse;
         }
 
 

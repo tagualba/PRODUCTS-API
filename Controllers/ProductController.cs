@@ -41,7 +41,7 @@ namespace ProductsAPI.Controllers
         [HttpGet]
         [Route("getcatalogall")]
         //Obtiene todo el catalogo sin filtros
-        public getCatalogResponse GetCatalogAll()
+        public GetCatalogResponse GetCatalogAll()
         {   
             return _productModel.GetCatalogAll();
         }
@@ -49,7 +49,7 @@ namespace ProductsAPI.Controllers
         [HttpGet]
         [Route("getcatalogsearchbar")]
         //Obtiene todo el catalogo con filtro de marca, description y stock de la searchbar
-        public getCatalogResponse GetCatalogSearchBar(string request)
+        public GetCatalogResponse GetCatalogSearchBar(string request)
         {   
             var getCatalogRequest = JsonSerializer.Deserialize<GetCatalogRequest>(request);
             return _productModel.GetCatalogSearchBar(getCatalogRequest);
@@ -58,7 +58,7 @@ namespace ProductsAPI.Controllers
         [HttpGet]
         [Route("getcatalogbyfilter")]
         //Obtiene todo el catalogo con filtro de categoria, subcategoria y precio
-        public getCatalogResponse GetCatalogByFilter(string request)
+        public GetCatalogResponse GetCatalogByFilter(string request)
         {   
             var getCatalogRequest = JsonSerializer.Deserialize<GetCatalogRequest>(request);
             return _productModel.GetCatalogByFilter(getCatalogRequest);
@@ -69,7 +69,7 @@ namespace ProductsAPI.Controllers
 
 
         #region POST
-        
+
 
         [HttpPost]
         [Route("post")]

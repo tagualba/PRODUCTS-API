@@ -15,22 +15,45 @@ namespace ProductsAPI.Models
         {
         }   
 
+
         #region GET
 
-        public GetClientResponse Get(GetClientRequest request)
+
+        public GetClientResponse GetByEmail(GetClientRequest request)
         {
-            var response = new GetClientResponse();
-            return response;
+            GetClientResponse clientResponse = new GetClientResponse();
+            try
+            {
+                ClientDataAccess _dataAccess = new ClientDataAccess();
+                clientResponse = _dataAccess.GetByEmail(request);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductModel.GetByEmail : ERROR : "+ex.Message);
+                throw;
+            }
+            return clientResponse;
         }
 
-        public GetClientsResponse GetClients(GetClientsRequest request)
-        {
-            var response = new GetClientsResponse();
-            return response;
+        public GetClientsResponse GetClients()
+        {   
+            GetClientsResponse clientsResponse = new GetClientsResponse();
+            try
+            {
+                ClientDataAccess _dataAccess = new ClientDataAccess();
+                clientsResponse = _dataAccess.GetClients();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductModel.GetClients : ERROR : "+ex.Message);
+                throw;
+            }
+            return clientsResponse;
         }
 
 
         #endregion
+
 
         #region POST
 
@@ -69,7 +92,7 @@ namespace ProductsAPI.Models
             }
         }
 
-        #endregion
 
+        #endregion
     }
 }

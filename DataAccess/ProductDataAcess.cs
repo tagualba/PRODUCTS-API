@@ -24,12 +24,12 @@ namespace ProductsAPI.Models
 
         public ProductResponse GetByID(GetProductRequest request)
         {
-            ProductResponse response = new ProductResponse();
+            ProductResponse productResponse = new ProductResponse();
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 var query = context.ProductsEntity.Find(request.IdProduct);
-                ProductResponse productResponse = new ProductResponse()
+                ProductResponse productEntity = new ProductResponse()
                 {
                     IdProduct = query.IdProduct,
                     Description = query.Description,
@@ -41,36 +41,36 @@ namespace ProductsAPI.Models
                     Recipe = query.Recipe,
                     IdResoruce = query.IdResoruce
                 };
-                response = productResponse;
+                productResponse = productEntity;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetByID : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return productResponse;
         }
 
-        public getCatalogResponse GetCatalogAll()
+        public GetCatalogResponse GetCatalogAll()
         {   
-            getCatalogResponse response = new getCatalogResponse(); 
+            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
             try
             {  
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 var query = context.ProductsEntity.ToList();
-                response.catalog = query;
+                getCatalogResponse.ProductsEntities = query;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetCatalogAll : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return getCatalogResponse;
         }
 
-        public getCatalogResponse GetCatalogSearchBar(GetCatalogRequest request)
+        public GetCatalogResponse GetCatalogSearchBar(GetCatalogRequest request)
         {   
-            getCatalogResponse response = new getCatalogResponse(); 
+            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
             try
             {  
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
@@ -79,19 +79,19 @@ namespace ProductsAPI.Models
                         || p.Marca.Contains(request.Marca)
                         && p.Stock > 0
                         ).ToList();
-                response.catalog = query;
+                getCatalogResponse.ProductsEntities = query;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetCatalogSearchBar : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return getCatalogResponse;
         }
 
-        public getCatalogResponse GetCatalogFilterByCategory(GetCatalogRequest request)
+        public GetCatalogResponse GetCatalogFilterByCategory(GetCatalogRequest request)
         {   
-            getCatalogResponse response = new getCatalogResponse(); 
+            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
             try
             {  
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
@@ -101,19 +101,19 @@ namespace ProductsAPI.Models
                         && p.Price >= request.PriceMin
                         && p.Price <= request.PriceMax
                         ).ToList();
-                response.catalog = query;
+                getCatalogResponse.ProductsEntities = query;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetCatalogFilterByCategory : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return getCatalogResponse;
         }
 
-        public getCatalogResponse GetCatalogFilterBySubCategory(GetCatalogRequest request)
+        public GetCatalogResponse GetCatalogFilterBySubCategory(GetCatalogRequest request)
         {   
-            getCatalogResponse response = new getCatalogResponse(); 
+            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
             try
             {  
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
@@ -123,19 +123,19 @@ namespace ProductsAPI.Models
                         && p.Price >= request.PriceMin
                         && p.Price <= request.PriceMax
                         ).ToList();
-                response.catalog = query;
+                getCatalogResponse.ProductsEntities = query;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetCatalogFilterBySubCategory : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return getCatalogResponse;
         }
 
-        public getCatalogResponse GetCatalogFilterByPrice(GetCatalogRequest request)
+        public GetCatalogResponse GetCatalogFilterByPrice(GetCatalogRequest request)
         {   
-            getCatalogResponse response = new getCatalogResponse(); 
+            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
             try
             {  
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
@@ -144,14 +144,14 @@ namespace ProductsAPI.Models
                         && p.Price >= request.PriceMin
                         && p.Price <= request.PriceMax
                         ).ToList();
-                response.catalog = query;
+                getCatalogResponse.ProductsEntities = query;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetCatalogFilterByPrice : ERROR : "+ex.Message);
                 throw;
             }
-            return response;
+            return getCatalogResponse;
         }
 
         
@@ -166,7 +166,7 @@ namespace ProductsAPI.Models
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                ProductsEntity product = new ProductsEntity()
+                ProductsEntity productEntity = new ProductsEntity()
                 {
                     Description = request.Description,
                     Marca = request.Marca,
@@ -177,7 +177,7 @@ namespace ProductsAPI.Models
                     Recipe = request.Recipe,
                     IdResoruce = request.IdResoruce
                 };
-                context.ProductsEntity.Add(product);
+                context.ProductsEntity.Add(productEntity);
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -192,11 +192,11 @@ namespace ProductsAPI.Models
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                CategorysEntity category = new CategorysEntity()
+                CategorysEntity categoryEntity = new CategorysEntity()
                 {
                     Description = request.Description
                 };
-                context.CategorysEntity.Add(category);
+                context.CategorysEntity.Add(categoryEntity);
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -211,11 +211,11 @@ namespace ProductsAPI.Models
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                SubCategorysEntity subCategory = new SubCategorysEntity()
+                SubCategorysEntity subCategoryEntity = new SubCategorysEntity()
                 {
                     Description = request.Description
                 };
-                context.SubCategorysEntity.Add(subCategory);
+                context.SubCategorysEntity.Add(subCategoryEntity);
                 context.SaveChanges();
             }
             catch (Exception ex)

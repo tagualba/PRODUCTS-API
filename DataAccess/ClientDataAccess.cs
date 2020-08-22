@@ -20,16 +20,52 @@ namespace ProductsAPI.Models
 
         #region GET
 
-        public GetClientResponse Get()
+        public GetClientResponse GetByEmail(GetClientRequest request)
         {
-            var response = new GetClientResponse();
-            return response;
+            GetClientResponse clientResponse = new GetClientResponse();
+            try
+            {
+                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+                var query = context.ClientsEntity.Where
+                        (c => c.Email == request.Email).FirstOrDefault();
+                GetClientResponse clientEntity = new GetClientResponse()
+                {
+                    IdClient = query.IdClient,
+                    Name = query.Name,
+                    Surname = query.Surname,
+                    IdentificationNumber = query.IdentificationNumber,
+                    IdTypeIdentification = query.IdTypeIdentification,
+                    HomeStreet = query.HomeStreet,
+                    HomeHeigth = query.HomeHeigth,
+                    IdPostalCode = query.IdPostalCode,
+                    Email = query.Email,
+                    Phone = query.Phone
+                };
+                clientResponse = clientEntity;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductDataAccess.GetByEmail : ERROR : "+ex.Message);
+                throw;
+            }
+            return clientResponse;
         }
 
         public GetClientsResponse GetClients()
         {
-            var response = new GetClientsResponse();
-            return response;
+            GetClientsResponse clientsResponse = new GetClientsResponse();
+            try
+            {
+                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+                var query = context.ClientsEntity.ToList();;
+                clientsResponse.ClientsEntities = query;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductDataAccess.GetClients : ERROR : "+ex.Message);
+                throw;
+            }
+            return clientsResponse;
         }
 
 
@@ -43,7 +79,7 @@ namespace ProductsAPI.Models
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                ClientsEntity client = new ClientsEntity()
+                ClientsEntity clientEntity = new ClientsEntity()
                 {
                     Name = request.Name,
                     Surname = request.Surname,
@@ -55,7 +91,7 @@ namespace ProductsAPI.Models
                     Email = request.Email,
                     Phone = request.Phone
                 };
-                context.ClientsEntity.Add(client);
+                context.ClientsEntity.Add(clientEntity);
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -70,12 +106,12 @@ namespace ProductsAPI.Models
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                NewsletterEntity newsletter = new NewsletterEntity()
+                NewsletterEntity newsletterEntity = new NewsletterEntity()
                 {
                     Email = request.Email,
                     Phone = request.Phone
                 };
-                context.NewsletterEntity.Add(newsletter);
+                context.NewsletterEntity.Add(newsletterEntity);
                 context.SaveChanges();
             }
             catch (Exception ex)

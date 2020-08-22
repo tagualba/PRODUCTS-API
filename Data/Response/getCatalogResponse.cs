@@ -4,8 +4,8 @@ using ProductsAPI.Data.Context.Entitys;
 
 namespace ProductsAPI.Data.Request
 {
-    public class getCatalogResponse
+    public class GetCatalogResponse
     {
-        public List<ProductsEntity> catalog { get; set; }
+        public List<ProductsEntity> ProductsEntities { get; set; }
     }
 }
