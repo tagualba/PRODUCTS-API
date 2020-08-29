@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using ProductsAPI.Data.Request;
-using ProductsAPI.Data.Context;
+using ProductsAPI.Data.Context.Entitys;
+using ProductsAPI.Models.Helpers;
 
 namespace ProductsAPI.Models
 {
@@ -20,6 +21,27 @@ namespace ProductsAPI.Models
 
         #region GET
         
+
+        public GetFiltersResponse GetFilters()
+        {
+            GetFiltersResponse getFiltersResponse = new GetFiltersResponse();
+            try
+            {
+                ProductDataAcess _dataAccess = new ProductDataAcess();
+                var _dataAccessResponse = _dataAccess.GetFilters();
+                if (_dataAccessResponse != null)
+                {
+                    ProductHelper _helper = new ProductHelper();
+                    getFiltersResponse = _helper.CreateCategoryTree(_dataAccessResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductModel.GetFilters : ERROR : "+ex.Message);
+                throw;
+            }
+            return getFiltersResponse;
+        }
 
         public ProductResponse GetByID(GetProductRequest request)
         {
@@ -43,7 +65,12 @@ namespace ProductsAPI.Models
             try
             {
                 ProductDataAcess _dataAccess = new ProductDataAcess();
-                getCatalogResponse = _dataAccess.GetCatalogAll();
+                var _dataAccessResponse = _dataAccess.GetCatalogAll();
+                if (_dataAccessResponse != null)
+                {
+                    ProductHelper _helper = new ProductHelper();
+                    getCatalogResponse = _helper.CreateList(_dataAccessResponse);
+                }
             }
             catch (Exception ex)
             {
@@ -53,13 +80,19 @@ namespace ProductsAPI.Models
             return getCatalogResponse;
         }
 
-        public GetCatalogResponse GetCatalogSearchBar(GetCatalogRequest request)
+        public GetCatalogResponse GetCatalogSearchBar(GetSearchBarRequest request)
         {   
             GetCatalogResponse getCatalogResponse = new GetCatalogResponse();
+
             try
             {
                 ProductDataAcess _dataAccess = new ProductDataAcess();
-                getCatalogResponse = _dataAccess.GetCatalogSearchBar(request);
+                var _dataAccessResponse = _dataAccess.GetCatalogSearchBar(request);
+                if (_dataAccessResponse != null)
+                {
+                    ProductHelper _helper = new ProductHelper();
+                    getCatalogResponse = _helper.CreateList(_dataAccessResponse);
+                }
             }
             catch (Exception ex)
             {
@@ -75,17 +108,11 @@ namespace ProductsAPI.Models
             try
             {
                 ProductDataAcess _dataAccess = new ProductDataAcess();
-                if (request.IdCategory != 0)
+                var _dataAccessResponse = _dataAccess.GetCatalogFilter(request);
+                if(_dataAccessResponse != null)
                 {
-                    getCatalogResponse = _dataAccess.GetCatalogFilterByCategory(request);
-                }
-                else if (request.IdSubCategory != 0)
-                {
-                    getCatalogResponse = _dataAccess.GetCatalogFilterBySubCategory(request);
-                }
-                else
-                {
-                    getCatalogResponse = _dataAccess.GetCatalogFilterByPrice(request);  
+                    ProductHelper _helper = new ProductHelper();
+                    getCatalogResponse = _helper.CatalogFilter(_dataAccessResponse, request);
                 }
             }
             catch (Exception ex)
@@ -154,6 +181,22 @@ namespace ProductsAPI.Models
             }
         }
 
+        public int LoadMarca(LoadMarcaRequest request)
+        {   
+            try
+            {
+                ProductDataAcess _dataAccess = new ProductDataAcess();
+                _dataAccess.LoadMarca(request);
+                //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
+                return 204;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductModel.LoadMarca : ERROR : "+ex.Message);
+                //Error interno del servidor
+                return 500;
+            }
+        }
 
         #endregion
     }

@@ -6,7 +6,8 @@ namespace ProductsAPI.Data.Request
     public class LoadProductRequest
     {
         public string Description { get; set; }
-        public string Marca { get; set;}
+        public string Name { get; set; }
+        public int idMarca { get; set; }
         public int Stock { get; set; }
         public decimal Price { get; set; }
         public int IdCategory { get; set; }

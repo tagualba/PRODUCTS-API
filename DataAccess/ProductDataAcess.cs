@@ -22,26 +22,87 @@ namespace ProductsAPI.Models
         #region GET
         
 
+        public List<ProductDataAccessResponse> GetFilters()
+        {
+            List<ProductDataAccessResponse> _dataAccessResponse = new List<ProductDataAccessResponse>();
+            try
+            {
+                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+                var query = from p in context.ProductsEntity 
+                            join cat in context.CategorysEntity on p.IdCategory equals cat.IdCategory
+                            join subcat in context.SubCategorysEntity on p.IdSubCategory equals subcat.IdSubCategory
+                            join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
+                            where (p.Stock > 0)
+                            select new
+                            {
+                                ProductDataAccessResponse = new ProductDataAccessResponse
+                                    {
+                                    CategoryUsed = new CategorysEntity
+                                    {
+                                        IdCategory = p.IdCategory,
+                                        Description = cat.Description
+                                    },
+                                    SubCategoryUsed = new SubCategorysEntity
+                                    {
+                                        IdSubCategory = p.IdSubCategory,
+                                        Description = subcat.Description,
+                                        IdCategory = subcat.IdCategory
+                                    },
+                                    MarcaUsed = new MarcasEntity
+                                    {
+                                        IdMarca = p.IdMarca,
+                                        Description = m.Description
+                                    }
+                                }
+                            };
+                if (query != null)
+                {   
+                    foreach (var obj in query)
+                    {
+                        _dataAccessResponse.Add(obj.ProductDataAccessResponse);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductDataAccess.GetFilters : ERROR : "+ex.Message);
+                throw;
+            }
+            return _dataAccessResponse;
+        }
+
         public ProductResponse GetByID(GetProductRequest request)
         {
             ProductResponse productResponse = new ProductResponse();
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                var query = context.ProductsEntity.Find(request.IdProduct);
-                ProductResponse productEntity = new ProductResponse()
+                var query = from p in context.ProductsEntity
+                            where (p.IdCategory == request.IdProduct)
+                            join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
+                            join marca in context.MarcasEntity on p.IdMarca equals marca.IdMarca
+                            select new
+                            {
+                                productEntity = new ProductResponse()
+                                {
+                                    IdProduct = p.IdProduct,
+                                    Description = p.Description,
+                                    Name = p.Name,
+                                    IdMarca = p.IdMarca,
+                                    Marca = marca.Description,
+                                    Stock = p.Stock,
+                                    Price = p.Price,
+                                    IdCategory = p.IdCategory,
+                                    IdSubCategory = p.IdSubCategory,
+                                    Recipe = p.Recipe,
+                                    Path = path.Path
+                                }
+                            };
+                if (query != null)
                 {
-                    IdProduct = query.IdProduct,
-                    Description = query.Description,
-                    Marca = query.Marca,
-                    Stock = query.Stock,
-                    Price = query.Price,
-                    IdCategory = query.IdCategory,
-                    IdSubCategory = query.IdSubCategory,
-                    Recipe = query.Recipe,
-                    IdResoruce = query.IdResoruce
-                };
-                productResponse = productEntity;
+                    var firstQueryItem = query.FirstOrDefault();
+                    productResponse = firstQueryItem.productEntity;
+                }
             }
             catch (Exception ex)
             {
@@ -51,110 +112,176 @@ namespace ProductsAPI.Models
             return productResponse;
         }
 
-        public GetCatalogResponse GetCatalogAll()
+        public List<ProductDataAccessResponse> GetCatalogAll()
         {   
-            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
+            List<ProductDataAccessResponse> _dataAccessResponse = new List<ProductDataAccessResponse>();
             try
             {  
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                var query = context.ProductsEntity.ToList();
-                getCatalogResponse.ProductsEntities = query;
+                var query = from p in context.ProductsEntity
+                            join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
+                            join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
+                            join cat in context.CategorysEntity on p.IdCategory equals cat.IdCategory
+                            join subcat in context.SubCategorysEntity on p.IdSubCategory equals subcat.IdSubCategory
+                            where (p.Stock > 0)
+                            select new
+                            {
+                                ProductDataAccessResponse = new ProductDataAccessResponse
+                                    {
+                                    ProductCard = new ProductCardResponse
+                                    {
+                                        IdProduct = p.IdProduct,
+                                        Name = p.Name,
+                                        Price = p.Price,
+                                        Path = path.Path
+                                    },
+                                    CategoryUsed = new CategorysEntity
+                                    {
+                                        IdCategory = p.IdCategory,
+                                        Description = cat.Description
+                                    },
+                                    SubCategoryUsed = new SubCategorysEntity
+                                    {
+                                        IdSubCategory = p.IdSubCategory,
+                                        Description = subcat.Description,
+                                        IdCategory = subcat.IdCategory
+                                    },
+                                    MarcaUsed = new MarcasEntity
+                                    {
+                                        IdMarca = m.IdMarca,
+                                        Description = m.Description
+                                    }
+                                }
+                            };
+                if (query != null)
+                {
+                    foreach (var obj in query)
+                    {
+                        _dataAccessResponse.Add(obj.ProductDataAccessResponse);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetCatalogAll : ERROR : "+ex.Message);
                 throw;
             }
-            return getCatalogResponse;
+            return _dataAccessResponse;
         }
 
-        public GetCatalogResponse GetCatalogSearchBar(GetCatalogRequest request)
+        public List<ProductDataAccessResponse> GetCatalogSearchBar(GetSearchBarRequest request)
         {   
-            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
+            List<ProductDataAccessResponse> _dataAccessResponse = new List<ProductDataAccessResponse>(); 
             try
             {  
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                var query = context.ProductsEntity.Where 
-                        (p => p.Description.Contains(request.Description)
-                        || p.Marca.Contains(request.Marca)
-                        && p.Stock > 0
-                        ).ToList();
-                getCatalogResponse.ProductsEntities = query;
+                var query = from p in context.ProductsEntity
+                            join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
+                            join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
+                            join cat in context.CategorysEntity on p.IdCategory equals cat.IdCategory
+                            join subcat in context.SubCategorysEntity on p.IdSubCategory equals subcat.IdSubCategory
+                            where (m.Description.Contains(request.SearchBarText) || p.Description.Contains(request.SearchBarText)) && p.Stock > 0
+                            select new
+                            {
+                                ProductDataAccessResponse = new ProductDataAccessResponse
+                                    {
+                                    ProductCard = new ProductCardResponse
+                                    {
+                                        IdProduct = p.IdProduct,
+                                        Name = p.Name,
+                                        Price = p.Price,
+                                        Path = path.Path
+                                    },
+                                    CategoryUsed = new CategorysEntity
+                                    {
+                                        IdCategory = p.IdCategory,
+                                        Description = cat.Description
+                                    },
+                                    SubCategoryUsed = new SubCategorysEntity
+                                    {
+                                        IdSubCategory = p.IdSubCategory,
+                                        Description = subcat.Description,
+                                        IdCategory = subcat.IdCategory
+                                    },
+                                    MarcaUsed = new MarcasEntity
+                                    {
+                                        IdMarca = m.IdMarca,
+                                        Description = m.Description
+                                    }
+                                }
+                            };
+                if (query != null)
+                {
+                    foreach (var obj in query)
+                    {
+                        _dataAccessResponse.Add(obj.ProductDataAccessResponse);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetCatalogSearchBar : ERROR : "+ex.Message);
                 throw;
             }
-            return getCatalogResponse;
+            return _dataAccessResponse;
         }
 
-        public GetCatalogResponse GetCatalogFilterByCategory(GetCatalogRequest request)
+        public List<ProductDataAccessResponse> GetCatalogFilter(GetCatalogRequest request)
         {   
-            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
+            List<ProductDataAccessResponse> _dataAccessResponse = new List<ProductDataAccessResponse>();
             try
             {  
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                var query = context.ProductsEntity.Where 
-                        (p => p.IdCategory == request.IdCategory
-                        && p.Stock > 0
-                        && p.Price >= request.PriceMin
-                        && p.Price <= request.PriceMax
-                        ).ToList();
-                getCatalogResponse.ProductsEntities = query;
+                var query = from p in context.ProductsEntity
+                            join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
+                            join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
+                            join cat in context.CategorysEntity on p.IdCategory equals cat.IdCategory
+                            join subcat in context.SubCategorysEntity on p.IdSubCategory equals subcat.IdSubCategory
+                            where (p.Price > request.PriceMin && p.Price < request.PriceMax && p.Stock > 0)
+                            select new
+                            {
+                                ProductDataAccessResponse = new ProductDataAccessResponse
+                                    {
+                                    ProductCard = new ProductCardResponse
+                                    {
+                                        IdProduct = p.IdProduct,
+                                        Name = p.Name,
+                                        Price = p.Price,
+                                        Path = path.Path
+                                    },
+                                    CategoryUsed = new CategorysEntity
+                                    {
+                                        IdCategory = p.IdCategory,
+                                        Description = cat.Description
+                                    },
+                                    SubCategoryUsed = new SubCategorysEntity
+                                    {
+                                        IdSubCategory = p.IdSubCategory,
+                                        Description = subcat.Description,
+                                        IdCategory = subcat.IdCategory
+                                    },
+                                    MarcaUsed = new MarcasEntity
+                                    {
+                                        IdMarca = m.IdMarca,
+                                        Description = m.Description
+                                    }
+                                }
+                            };
+                if (query != null)
+                {
+                    foreach (var obj in query)
+                    {
+                        _dataAccessResponse.Add(obj.ProductDataAccessResponse);
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ProductDataAccess.GetCatalogFilterByCategory : ERROR : "+ex.Message);
+                Console.WriteLine("ProductDataAccess.GetCatalogAll : ERROR : "+ex.Message);
                 throw;
             }
-            return getCatalogResponse;
+            return _dataAccessResponse;
         }
-
-        public GetCatalogResponse GetCatalogFilterBySubCategory(GetCatalogRequest request)
-        {   
-            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
-            try
-            {  
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                var query = context.ProductsEntity.Where 
-                        (p => p.IdSubCategory == request.IdSubCategory
-                        && p.Stock > 0
-                        && p.Price >= request.PriceMin
-                        && p.Price <= request.PriceMax
-                        ).ToList();
-                getCatalogResponse.ProductsEntities = query;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("ProductDataAccess.GetCatalogFilterBySubCategory : ERROR : "+ex.Message);
-                throw;
-            }
-            return getCatalogResponse;
-        }
-
-        public GetCatalogResponse GetCatalogFilterByPrice(GetCatalogRequest request)
-        {   
-            GetCatalogResponse getCatalogResponse = new GetCatalogResponse(); 
-            try
-            {  
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                var query = context.ProductsEntity.Where 
-                        (p => p.Stock > 0
-                        && p.Price >= request.PriceMin
-                        && p.Price <= request.PriceMax
-                        ).ToList();
-                getCatalogResponse.ProductsEntities = query;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("ProductDataAccess.GetCatalogFilterByPrice : ERROR : "+ex.Message);
-                throw;
-            }
-            return getCatalogResponse;
-        }
-
-        
         #endregion
 
 
@@ -169,7 +296,8 @@ namespace ProductsAPI.Models
                 ProductsEntity productEntity = new ProductsEntity()
                 {
                     Description = request.Description,
-                    Marca = request.Marca,
+                    Name = request.Name,
+                    IdMarca = request.idMarca,
                     Stock = request.Stock,
                     Price = request.Price,
                     IdCategory = request.IdCategory,
@@ -225,7 +353,28 @@ namespace ProductsAPI.Models
             }
         }
 
+        public void LoadMarca(LoadMarcaRequest request)
+        {   
+            try
+            {
+                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+                MarcasEntity marcaEntity = new MarcasEntity()
+                {
+                    Description = request.Description
+                };
+                context.MarcasEntity.Add(marcaEntity);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductDataAccess.LoadMarca : ERROR : "+ex.Message);
+                throw;
+            }
+        }
+
 
         #endregion
+
+
     }
 }

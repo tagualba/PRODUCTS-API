@@ -57,7 +57,7 @@ namespace ProductsAPI.Models
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                var query = context.ClientsEntity.ToList();;
+                var query = context.ClientsEntity.ToList();
                 clientsResponse.ClientsEntities = query;
             }
             catch (Exception ex)

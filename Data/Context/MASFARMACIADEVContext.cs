@@ -32,6 +32,7 @@ namespace ProductsAPI.Data.Context
         public virtual DbSet<SubCategorysEntity> SubCategorysEntity { get; set; }
         public virtual DbSet<TypesOrdersEntity> TypesOrdersEntity { get; set; }
         public virtual DbSet<NewsletterEntity> NewsletterEntity { get; set; }
+        public virtual DbSet<MarcasEntity> MarcasEntity { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -172,9 +173,15 @@ namespace ProductsAPI.Data.Context
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Marca)
+                entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("marca")
+                    .HasColumnName("name")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdMarca)
+                    .IsRequired()
+                    .HasColumnName("id_marca")
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
@@ -299,6 +306,8 @@ namespace ProductsAPI.Data.Context
                     .HasColumnName("description")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+                
+                entity.Property(e => e.IdCategory).HasColumnName("id_category");
             });
 
             modelBuilder.Entity<TypesOrdersEntity>(entity =>
@@ -308,6 +317,21 @@ namespace ProductsAPI.Data.Context
                 entity.ToTable("types_Orders", "dbo");
 
                 entity.Property(e => e.IdTypeOrder).HasColumnName("id_type_order");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasColumnName("description")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<MarcasEntity>(entity =>
+            {
+                entity.HasKey(e => e.IdMarca);
+
+                entity.ToTable("marcas", "dbo");
+
+                entity.Property(e => e.IdMarca).HasColumnName("id_marca");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
@@ -335,9 +359,9 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
 
             });
-
             OnModelCreatingPartial(modelBuilder);
         }
+        
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }

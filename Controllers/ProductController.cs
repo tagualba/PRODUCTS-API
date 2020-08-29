@@ -30,6 +30,13 @@ namespace ProductsAPI.Controllers
         
 
         [HttpGet]
+        [Route("getfilters")]
+        public GetFiltersResponse GetFilters()
+        {
+            return _productModel.GetFilters();
+        }
+
+        [HttpGet]
         [Route("getbyid")]
         //Obtiene producto introduciendo el id
         public ProductResponse GetByID(string request)
@@ -50,16 +57,16 @@ namespace ProductsAPI.Controllers
         [Route("getcatalogsearchbar")]
         //Obtiene todo el catalogo con filtro de marca, description y stock de la searchbar
         public GetCatalogResponse GetCatalogSearchBar(string request)
-        {   
-            var getCatalogRequest = JsonSerializer.Deserialize<GetCatalogRequest>(request);
+        {
+            var getCatalogRequest = JsonSerializer.Deserialize<GetSearchBarRequest>(request);
             return _productModel.GetCatalogSearchBar(getCatalogRequest);
         }
 
         [HttpGet]
         [Route("getcatalogbyfilter")]
-        //Obtiene todo el catalogo con filtro de categoria, subcategoria y precio
+        //Obtiene todo el catalogo con filtro de categoria, subcategoria, marca y precio
         public GetCatalogResponse GetCatalogByFilter(string request)
-        {   
+        {
             var getCatalogRequest = JsonSerializer.Deserialize<GetCatalogRequest>(request);
             return _productModel.GetCatalogByFilter(getCatalogRequest);
         }
@@ -96,6 +103,15 @@ namespace ProductsAPI.Controllers
         {   
             var loadSubCategoryRequest = JsonSerializer.Deserialize<LoadSubCategoryRequest>(request);
             return _productModel.LoadSubCategory(loadSubCategoryRequest);
+        }
+
+        [HttpPost]
+        [Route("loadmarca")]
+        //Carga una subcategoria
+        public int LoadMarca(string request)
+        {   
+            var loadMarcaRequest = JsonSerializer.Deserialize<LoadMarcaRequest>(request);
+            return _productModel.LoadMarca(loadMarcaRequest);
         }
 
 

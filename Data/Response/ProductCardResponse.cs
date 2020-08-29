@@ -4,8 +4,12 @@ using ProductsAPI.Data.Context.Entitys;
 
 namespace ProductsAPI.Data.Request
 {
-    public class GetProductRequest
+    public class ProductCardResponse
     {
         public int IdProduct { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public string Path { get; set; }
     }
 }
+
