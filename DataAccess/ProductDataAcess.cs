@@ -132,6 +132,7 @@ namespace ProductsAPI.Models
                                     {
                                         IdProduct = p.IdProduct,
                                         Name = p.Name,
+                                        Marca = m.Description,
                                         Price = p.Price,
                                         Path = path.Path
                                     },
@@ -189,6 +190,7 @@ namespace ProductsAPI.Models
                                     {
                                         IdProduct = p.IdProduct,
                                         Name = p.Name,
+                                        Marca = m.Description,
                                         Price = p.Price,
                                         Path = path.Path
                                     },
@@ -246,6 +248,7 @@ namespace ProductsAPI.Models
                                     {
                                         IdProduct = p.IdProduct,
                                         Name = p.Name,
+                                        Marca = m.Description,
                                         Price = p.Price,
                                         Path = path.Path
                                     },

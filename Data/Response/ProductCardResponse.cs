@@ -8,6 +8,7 @@ namespace ProductsAPI.Data.Request
     {
         public int IdProduct { get; set; }
         public string Name { get; set; }
+        public string Marca { get; set; }
         public decimal Price { get; set; }
         public string Path { get; set; }
     }
