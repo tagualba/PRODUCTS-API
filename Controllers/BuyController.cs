@@ -24,15 +24,17 @@ namespace ProductsAPI.Controllers
             _buyModel = new BuyModel();
         }
 
+
         #region GET
         
+
         [HttpGet]
         //todo de la venta
         //objeto: cliente
         //        resumen y detalle de venta
         public BuyDetailResponse Detail(string request)
         {
-            var buyDetailRequest = JsonSerializer.Deserialize<BuyDetailRequest>(request);
+            var buyDetailRequest = JsonSerializer.Deserialize<LoadBuyDetailRequest>(request);
             return _buyModel.Detail(buyDetailRequest);
         } 
 
@@ -60,26 +62,21 @@ namespace ProductsAPI.Controllers
             return _buyModel.SalesSummary(salesSummaryRequest);
         } 
 
+
         #endregion
         
         
         #region POST
 
-        [HttpPost]
-        [Route("post")]
-        public int Post(string request)
-        {
-            var buyRequest = JsonSerializer.Deserialize<BuyRequest>(request);
-            return _buyModel.Post(buyRequest);
-        }
 
         [HttpPost]
-        [Route("postdetail")]
-        public int PostDetail(string request)
+        [Route("postbuy")]
+        public int PostBuy(string request)
         {
-            var buyDetailRequest = JsonSerializer.Deserialize<BuyDetailRequest>(request);
-            return _buyModel.PostDetail(buyDetailRequest);
+            var loadBuyRequest = JsonSerializer.Deserialize<LoadBuyRequest>(request);
+            return _buyModel.PostBuy(loadBuyRequest);
         }
+
 
         #endregion
     }

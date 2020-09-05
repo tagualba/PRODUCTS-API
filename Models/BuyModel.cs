@@ -14,9 +14,11 @@ namespace ProductsAPI.Models
         {
         }
 
+
         #region GET
         
-        public BuyDetailResponse Detail(BuyDetailRequest request)
+
+        public BuyDetailResponse Detail(LoadBuyDetailRequest request)
         {
             var response = new BuyDetailResponse();
             return response;
@@ -40,51 +42,43 @@ namespace ProductsAPI.Models
             return response;
         } 
 
+
         #endregion
         
         
         #region POST
 
   
-        public int Post(BuyRequest request)
+        public int PostBuy(LoadBuyRequest request)
         {
             try
             {
-                BuyDataAccess _dataAccess = new BuyDataAccess();
-                _dataAccess.Insert(request);
-                //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
+                //  Asigno Fecha de hoy
+                request.UploadDate = DateTime.Today;
+
+                //  Inserta un nuevo cliente y retorna el id creado
+                ClientDataAccess _clientDataAccess = new ClientDataAccess();
+                request.IdClient = _clientDataAccess.PostClient(request.NewClient);
+
+                //  Inserta una compra y retorna el id creado
+                BuyDataAccess _buyDataAccess = new BuyDataAccess();
+                request.IdBuy = _buyDataAccess.PostBuy(request);
+
+                //  Inserta un detalle de compra
+                _buyDataAccess.PostBuyDetail(request);
+
+                //  Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
                 return 204;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("BuyModel.Post : ERROR : "+ex.Message);
-                //Error interno del servidor
+                Console.WriteLine("BuyModel.PostBuy : ERROR : "+ex.Message);
+                //  Error interno del servidor
                 return 500;
             }
         }
 
-        public int PostDetail(BuyDetailRequest request)
-        {
-            try
-            {
-                BuyDataAccess _dataAccess = new BuyDataAccess();
-                _dataAccess.InsertDetail(request);
-                //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
-                return 204;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("BuyModel.PostDetail : ERROR : "+ex.Message);
-                //Error interno del servidor
-                return 500;
-            }
-        }
 
         #endregion
-
-
-
-
-
     }
 }

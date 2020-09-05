@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
+using ProductsAPI.Data.Context.Entitys;
 
 namespace ProductsAPI.Data.Request
 {
-    public class BuyRequest
+    public class LoadBuyRequest
     {
+        public LoadClientRequest NewClient { get; set; }
         public DateTime UploadDate { get; set; }
         public decimal TotalAmount { get; set; }
         public int IdClient { get; set; }
         public int IdOrder { get; set; }
+        public int IdBuy { get; set; } 
+        public List  <LoadBuyDetailRequest> BuyDetail { get; set; }
     }
 }

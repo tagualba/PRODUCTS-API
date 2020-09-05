@@ -63,7 +63,7 @@ namespace ProductsAPI.Models
             try
             {
                 ClientDataAccess _dataAccess = new ClientDataAccess();
-                _dataAccess.Insert(request);
+                _dataAccess.PostClient(request);
                 //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
                 return 204;   
             }

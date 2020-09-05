@@ -16,8 +16,10 @@ namespace ProductsAPI.Models
         {
         }
 
+
         #region GET
         
+
         public BuyDetailResponse Detail()
         {
             var response = new BuyDetailResponse();
@@ -42,13 +44,16 @@ namespace ProductsAPI.Models
             return response;
         } 
 
+
         #endregion
         
         
         #region POST
 
-        public void Insert(BuyRequest request)
+
+        public int PostBuy(LoadBuyRequest request)
         {
+            int idBuy;
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
@@ -57,38 +62,44 @@ namespace ProductsAPI.Models
                     UploadDate = request.UploadDate,
                     TotalAmount = request.TotalAmount,
                     IdClient = request.IdClient,
-                    IdOrder = request.IdOrder
+                    IdOrder = request.IdOrder,
                 };
                 context.BuysEntity.Add(buysEntity);
                 context.SaveChanges();
+                idBuy = buysEntity.IdBuy;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("BuyDataAccess.Insert : ERROR : "+ex.Message);
+                Console.WriteLine("BuyDataAccess.PostBuy : ERROR : "+ex.Message);
                 throw;
             }
+            return idBuy;
         }
 
-        public void InsertDetail(BuyDetailRequest request)
+        public void PostBuyDetail(LoadBuyRequest request)
         {
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                BuysDetailsEntity buysDetailsEntity = new BuysDetailsEntity()
+                foreach (var obj in request.BuyDetail)
                 {
-                    IdProduct = request.IdProduct,
-                    Quantity = request.Quantity,
-                    IdBuy = request.IdBuy
-                };
-                context.BuysDetailsEntity.Add(buysDetailsEntity);
-                context.SaveChanges();                
+                    BuysDetailsEntity buysDetailsEntity = new BuysDetailsEntity()
+                    {
+                        IdProduct = obj.IdProduct,
+                        Quantity = obj.Quantity,
+                        IdBuy = request.IdBuy
+                    };
+                    context.BuysDetailsEntity.Add(buysDetailsEntity);
+                    context.SaveChanges();      
+                }          
             }
             catch (Exception ex)
             {
-                Console.WriteLine("BuyDataAccess.InsertDetail : ERROR : "+ex.Message);
+                Console.WriteLine("BuyDataAccess.PostBuyDetail : ERROR : "+ex.Message);
                 throw;
             }
         }
+
 
         #endregion
     }

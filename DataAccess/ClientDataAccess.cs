@@ -78,8 +78,9 @@ namespace ProductsAPI.Models
         #region POST
 
 
-        public void Insert(LoadClientRequest request)
+        public int PostClient(LoadClientRequest request)
         {
+            int idClient;
             try
             {
                 MASFARMACIADEVContext context = new MASFARMACIADEVContext();
@@ -101,12 +102,14 @@ namespace ProductsAPI.Models
                 };
                 context.ClientsEntity.Add(clientEntity);
                 context.SaveChanges();
+                idClient = clientEntity.IdClient;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ClientDataAccess.Insert : ERROR : "+ex.Message);
+                Console.WriteLine("ClientDataAccess.PostClient : ERROR : "+ex.Message);
                 throw;
             }
+            return idClient;
         }
 
         public void LoadNewsLetter(LoadNewsLetterRequest request)

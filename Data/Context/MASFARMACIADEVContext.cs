@@ -247,7 +247,7 @@ namespace ProductsAPI.Data.Context
 
                 entity.ToTable("Buys_details", "dbo");
 
-                entity.Property(e => e.IdBuyDetail).HasColumnName("id_buy_detail");
+                entity.Property(e => e.IdBuyDetail).HasColumnName("id_buys_details");
 
                 entity.Property(e => e.IdProduct).HasColumnName("id_product");
 
