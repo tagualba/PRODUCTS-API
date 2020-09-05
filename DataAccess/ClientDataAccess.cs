@@ -37,9 +37,13 @@ namespace ProductsAPI.Models
                     IdTypeIdentification = query.IdTypeIdentification,
                     HomeStreet = query.HomeStreet,
                     HomeHeigth = query.HomeHeigth,
+                    HomeDetails = query.HomeDetails,
+                    Departament = query.Departament,
+                    Region = query.Region,
                     IdPostalCode = query.IdPostalCode,
                     Email = query.Email,
-                    Phone = query.Phone
+                    Phone = query.Phone,
+                    AdicionalInfo = query.AdicionalInfo
                 };
                 clientResponse = clientEntity;
             }
@@ -87,9 +91,13 @@ namespace ProductsAPI.Models
                     IdTypeIdentification = request.IdTypeIdentification,
                     HomeStreet = request.HomeStreet,
                     HomeHeigth = request.HomeHeigth,
+                    HomeDetails = request.HomeDetails,
+                    Departament = request.Departament,
+                    Region = request.Region,
                     IdPostalCode = request.IdPostalCode,
                     Email = request.Email,
-                    Phone = request.Phone
+                    Phone = request.Phone,
+                    AdicionalInfo = request.AdicionalInfo
                 };
                 context.ClientsEntity.Add(clientEntity);
                 context.SaveChanges();

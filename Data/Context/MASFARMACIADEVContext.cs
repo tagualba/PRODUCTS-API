@@ -79,6 +79,21 @@ namespace ProductsAPI.Data.Context
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.HomeDetails)
+                    .HasColumnName("home_details")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Departament)
+                    .HasColumnName("home_departament")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Region)
+                    .HasColumnName("home_region")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.IdPostalCode).HasColumnName("id_postal_code");
 
                 entity.Property(e => e.IdTypeIdentification).HasColumnName("id_type_identification");
@@ -104,6 +119,11 @@ namespace ProductsAPI.Data.Context
                     .IsRequired()
                     .HasColumnName("surname")
                     .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.AdicionalInfo)
+                    .HasColumnName("adicional_information")
+                    .HasMaxLength(150)
                     .IsUnicode(false);
             });
 

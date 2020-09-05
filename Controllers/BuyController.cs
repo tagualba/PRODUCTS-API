@@ -27,6 +27,9 @@ namespace ProductsAPI.Controllers
         #region GET
         
         [HttpGet]
+        //todo de la venta
+        //objeto: cliente
+        //        resumen y detalle de venta
         public BuyDetailResponse Detail(string request)
         {
             var buyDetailRequest = JsonSerializer.Deserialize<BuyDetailRequest>(request);
@@ -34,6 +37,7 @@ namespace ProductsAPI.Controllers
         } 
 
         [HttpGet]
+        //resumen de venta, solo encabezado
         public BuySummaryResponse Summary(string request)
         {
             var buySummaryRequest = JsonSerializer.Deserialize<BuySummaryRequest>(request);
@@ -41,6 +45,7 @@ namespace ProductsAPI.Controllers
         } 
 
         [HttpGet]
+        //buys + details
         public SalesDetailsResponse SalesDetails(string request)
         {
             var salesDetailsRequest = JsonSerializer.Deserialize<SalesDetailsRequest>(request);
@@ -48,6 +53,7 @@ namespace ProductsAPI.Controllers
         } 
 
         [HttpGet]
+        //buys
         public SalesSummaryResponse SalesSummary(string request)
         {
             var salesSummaryRequest = JsonSerializer.Deserialize<SalesSummaryRequest>(request);
