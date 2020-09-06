@@ -38,7 +38,7 @@ namespace ProductsAPI.Controllers
 
         [HttpGet]
         [Route("getbyid")]
-        //Obtiene producto introduciendo el id
+        //  Obtiene producto introduciendo el id
         public ProductResponse GetByID(string request)
         {
             var getProductRequest = JsonSerializer.Deserialize<GetProductRequest>(request);
@@ -47,7 +47,7 @@ namespace ProductsAPI.Controllers
 
         [HttpGet]
         [Route("getcatalogall")]
-        //Obtiene todo el catalogo sin filtros
+        //  Obtiene todo el catalogo sin filtros
         public GetCatalogResponse GetCatalogAll()
         {   
             return _productModel.GetCatalogAll();
@@ -55,7 +55,7 @@ namespace ProductsAPI.Controllers
 
         [HttpGet]
         [Route("getcatalogsearchbar")]
-        //Obtiene todo el catalogo con filtro de marca, description y stock de la searchbar
+        //  Obtiene todo el catalogo con filtro de marca, description y stock de la searchbar
         public GetCatalogResponse GetCatalogSearchBar(string request)
         {
             var getCatalogRequest = JsonSerializer.Deserialize<GetSearchBarRequest>(request);
@@ -64,7 +64,7 @@ namespace ProductsAPI.Controllers
 
         [HttpGet]
         [Route("getcatalogbyfilter")]
-        //Obtiene todo el catalogo con filtro de categoria, subcategoria, marca y precio
+        //  Obtiene todo el catalogo con filtro de categoria, subcategoria, marca y precio
         public GetCatalogResponse GetCatalogByFilter(string request)
         {
             var getCatalogRequest = JsonSerializer.Deserialize<GetCatalogRequest>(request);
