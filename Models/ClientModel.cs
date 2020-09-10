@@ -10,45 +10,59 @@ namespace ProductsAPI.Models
 
     public class ClientModel 
     {
+        private ClientDataAccess _clientDataAccess; 
 
         public ClientModel()
         {
+            _clientDataAccess = new ClientDataAccess();
         }   
 
 
         #region GET
 
 
-        public GetClientResponse GetByEmail(GetClientRequest request)
+        public GetClientResponse GetById(GetClientRequest request)
         {
-            GetClientResponse clientResponse = new GetClientResponse();
+            GetClientResponse getClientResponse = new GetClientResponse();
             try
             {
-                ClientDataAccess _dataAccess = new ClientDataAccess();
-                clientResponse = _dataAccess.GetByEmail(request);
+                getClientResponse = _clientDataAccess.GetById(request.IdClient);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductModel.GetById : ERROR : "+ex.Message);
+                throw;
+            }
+            return getClientResponse;
+        }
+        public GetClientResponse GetByEmail(GetClientRequest request)
+        {
+            GetClientResponse getClientResponse = new GetClientResponse();
+            try
+            {
+                getClientResponse = _clientDataAccess.GetByEmail(request.Email);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductModel.GetByEmail : ERROR : "+ex.Message);
                 throw;
             }
-            return clientResponse;
+            return getClientResponse;
         }
 
         public GetClientsResponse GetClients()
         {   
-            GetClientsResponse clientsResponse = new GetClientsResponse();
+            GetClientsResponse getClientsResponse = new GetClientsResponse();
             try
             {
-                ClientDataAccess _dataAccess = new ClientDataAccess();
-                clientsResponse = _dataAccess.GetClients();
+                getClientsResponse = _clientDataAccess.GetClients();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductModel.GetClients : ERROR : "+ex.Message);
                 throw;
             }
-            return clientsResponse;
+            return getClientsResponse;
         }
 
 
@@ -62,8 +76,7 @@ namespace ProductsAPI.Models
         {
             try
             {
-                ClientDataAccess _dataAccess = new ClientDataAccess();
-                _dataAccess.PostClient(request);
+                _clientDataAccess.PostClient(request);
                 //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
                 return 204;   
             }
@@ -79,8 +92,7 @@ namespace ProductsAPI.Models
         {
             try
             {
-                ClientDataAccess _dataAccess = new ClientDataAccess();
-                _dataAccess.LoadNewsLetter(request);
+                _clientDataAccess.LoadNewsLetter(request);
                 //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
                 return 204;
             }

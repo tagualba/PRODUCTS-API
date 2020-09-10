@@ -11,36 +11,82 @@ namespace ProductsAPI.Models
 {
     public class BuyDataAccess
     {
+        private MASFARMACIADEVContext context;
         
         public BuyDataAccess()
         {
+            context = new MASFARMACIADEVContext();
         }
 
 
         #region GET
         
 
-        public BuyDetailResponse Detail()
+        public GetBuyDetailResponse GetBuy(GetBuyDetailRequest request)
         {
-            var response = new BuyDetailResponse();
-            return response;
-        } 
+            var getBuyDetailResponse = new GetBuyDetailResponse();
+            try
+            {
+                var query = from b in context.BuysEntity
+                            join bd in context.BuysDetailsEntity on b.IdBuy equals bd.IdBuy
+                            where (b.IdBuy == request.IdBuy)
+                            select new
+                            {
+                                buyDetails = new BuysDetailsEntity
+                                {
+                                    IdBuyDetail = bd.IdBuyDetail,
+                                    IdProduct = bd.IdProduct,
+                                    Quantity = bd.Quantity,
+                                    IdBuy = bd.IdBuy
+                                },
+                                buyheader = new BuysEntity
+                                {
+                                    IdBuy = b.IdBuy,
+                                    UploadDate = b.UploadDate,
+                                    TotalAmount = b.TotalAmount,
+                                    IdOrder = b.IdOrder,
+                                    IdClient = b.IdClient
+                                }
+                            };
+                if (query != null)
+                {
+                    foreach (var obj in query)
+                    {
+                        
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BuyDataAccess.GetBuy : ERROR : "+ex.Message);
+                throw;
+            }
+            return getBuyDetailResponse;
+        }
     
-        public BuySummaryResponse Summary()
+        public GetBuysSummaryResponse GetBuysSummary()
         {
-            var response = new BuySummaryResponse();
-            return response;
+            var getBuysSummaryResponse = new GetBuysSummaryResponse();
+            try
+            {
+                var query = from b in context.BuysEntity
+                            select b;
+                getBuysSummaryResponse.BuysEntites = query.ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BuyDataAccess.GetBuysSummary : ERROR : "+ex.Message);
+                throw;
+            }
+            return getBuysSummaryResponse;
         } 
 
-        public SalesDetailsResponse SalesDetails()
+        public GetBuysDetailsResponse GetBuysDetails()
         {
-            var response = new SalesDetailsResponse();
-            return response;
-        } 
-
-        public SalesSummaryResponse SalesSummary()
-        {
-            var response = new SalesSummaryResponse();
+            var response = new GetBuysDetailsResponse();
+            // logic here
+            // select a la tabla details
             return response;
         } 
 
@@ -53,10 +99,9 @@ namespace ProductsAPI.Models
 
         public int PostBuy(LoadBuyRequest request)
         {
-            int idBuy;
+            int idBuyResponse;
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 BuysEntity buysEntity = new BuysEntity()
                 {
                     UploadDate = request.UploadDate,
@@ -66,21 +111,20 @@ namespace ProductsAPI.Models
                 };
                 context.BuysEntity.Add(buysEntity);
                 context.SaveChanges();
-                idBuy = buysEntity.IdBuy;
+                idBuyResponse = buysEntity.IdBuy;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("BuyDataAccess.PostBuy : ERROR : "+ex.Message);
                 throw;
             }
-            return idBuy;
+            return idBuyResponse;
         }
 
         public void PostBuyDetail(LoadBuyRequest request)
         {
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 foreach (var obj in request.BuyDetail)
                 {
                     BuysDetailsEntity buysDetailsEntity = new BuysDetailsEntity()

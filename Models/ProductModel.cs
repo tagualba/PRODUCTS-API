@@ -13,9 +13,12 @@ namespace ProductsAPI.Models
 
     public class ProductModel
     {
-
+        private ProductDataAccess _productDataAccess;
+        private ProductHelper _productHelper;
         public ProductModel()
         {
+            _productDataAccess = new ProductDataAccess();
+            _productHelper = new ProductHelper();
         }
 
 
@@ -24,15 +27,13 @@ namespace ProductsAPI.Models
 
         public GetFiltersResponse GetFilters()
         {
-            GetFiltersResponse getFiltersResponse = new GetFiltersResponse();
+            var getFiltersResponse = new GetFiltersResponse();
             try
             {
-                ProductDataAcess _dataAccess = new ProductDataAcess();
-                var _dataAccessResponse = _dataAccess.GetFilters();
+                var _dataAccessResponse = _productDataAccess.GetFilters();
                 if (_dataAccessResponse != null)
                 {
-                    ProductHelper _helper = new ProductHelper();
-                    getFiltersResponse = _helper.CreateCategoryTree(_dataAccessResponse);
+                    getFiltersResponse = _productHelper.CreateCategoryTree(_dataAccessResponse);
                 }
             }
             catch (Exception ex)
@@ -43,33 +44,30 @@ namespace ProductsAPI.Models
             return getFiltersResponse;
         }
 
-        public ProductResponse GetByID(GetProductRequest request)
+        public GetProductResponse GetByID(GetProductRequest request)
         {
-            ProductResponse productResponse = new ProductResponse();
+            var getProductResponse = new GetProductResponse();
             try
             {
-                ProductDataAcess _dataAccess = new ProductDataAcess();
-                productResponse = _dataAccess.GetByID(request);
+                getProductResponse = _productDataAccess.GetByID(request);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductModel.GetByID : ERROR : "+ex.Message);
                 throw;
             }
-            return productResponse;
+            return getProductResponse;
         }
 
         public GetCatalogResponse GetCatalogAll()
         {   
-            GetCatalogResponse getCatalogResponse = new GetCatalogResponse();
+            var getCatalogResponse = new GetCatalogResponse();
             try
             {
-                ProductDataAcess _dataAccess = new ProductDataAcess();
-                var _dataAccessResponse = _dataAccess.GetCatalogAll();
+                var _dataAccessResponse = _productDataAccess.GetCatalogAll();
                 if (_dataAccessResponse != null)
                 {
-                    ProductHelper _helper = new ProductHelper();
-                    getCatalogResponse = _helper.CreateList(_dataAccessResponse);
+                    getCatalogResponse = _productHelper.CreateList(_dataAccessResponse);
                 }
             }
             catch (Exception ex)
@@ -82,16 +80,13 @@ namespace ProductsAPI.Models
 
         public GetCatalogResponse GetCatalogSearchBar(GetSearchBarRequest request)
         {   
-            GetCatalogResponse getCatalogResponse = new GetCatalogResponse();
-
+            var getCatalogResponse = new GetCatalogResponse();
             try
             {
-                ProductDataAcess _dataAccess = new ProductDataAcess();
-                var _dataAccessResponse = _dataAccess.GetCatalogSearchBar(request);
+                var _dataAccessResponse = _productDataAccess.GetCatalogSearchBar(request);
                 if (_dataAccessResponse != null)
                 {
-                    ProductHelper _helper = new ProductHelper();
-                    getCatalogResponse = _helper.CreateList(_dataAccessResponse);
+                    getCatalogResponse = _productHelper.CreateList(_dataAccessResponse);
                 }
             }
             catch (Exception ex)
@@ -104,15 +99,13 @@ namespace ProductsAPI.Models
 
         public GetCatalogResponse GetCatalogByFilter(GetCatalogRequest request)
         {   
-            GetCatalogResponse getCatalogResponse = new GetCatalogResponse();
+            var getCatalogResponse = new GetCatalogResponse();
             try
             {
-                ProductDataAcess _dataAccess = new ProductDataAcess();
-                var _dataAccessResponse = _dataAccess.GetCatalogFilter(request);
+                var _dataAccessResponse = _productDataAccess.GetCatalogFilter(request);
                 if(_dataAccessResponse != null)
                 {
-                    ProductHelper _helper = new ProductHelper();
-                    getCatalogResponse = _helper.CatalogFilter(_dataAccessResponse, request);
+                    getCatalogResponse = _productHelper.CatalogFilter(_dataAccessResponse, request);
                 }
             }
             catch (Exception ex)
@@ -134,8 +127,7 @@ namespace ProductsAPI.Models
         {   
             try
             {
-                ProductDataAcess _dataAccess = new ProductDataAcess();
-                _dataAccess.Insert(request);
+                _productDataAccess.Insert(request);
                 //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
                 return 204;  
             }
@@ -151,8 +143,7 @@ namespace ProductsAPI.Models
         {   
             try
             {
-                ProductDataAcess _dataAccess = new ProductDataAcess();
-                _dataAccess.LoadCategory(request);
+                _productDataAccess.LoadCategory(request);
                 //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
                 return 204;
             }
@@ -168,8 +159,7 @@ namespace ProductsAPI.Models
         {   
             try
             {
-                ProductDataAcess _dataAccess = new ProductDataAcess();
-                _dataAccess.LoadSubCategory(request);
+                _productDataAccess.LoadSubCategory(request);
                 //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
                 return 204;
             }
@@ -185,8 +175,7 @@ namespace ProductsAPI.Models
         {   
             try
             {
-                ProductDataAcess _dataAccess = new ProductDataAcess();
-                _dataAccess.LoadMarca(request);
+                _productDataAccess.LoadMarca(request);
                 //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
                 return 204;
             }

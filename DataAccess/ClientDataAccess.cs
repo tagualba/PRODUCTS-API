@@ -13,63 +13,103 @@ namespace ProductsAPI.Models
 
     public class ClientDataAccess 
     {
+        private MASFARMACIADEVContext context;
 
         public ClientDataAccess()
         {
+            context = new MASFARMACIADEVContext();
         }   
+
 
         #region GET
 
-        public GetClientResponse GetByEmail(GetClientRequest request)
+
+        public GetClientResponse GetById(int idClient)
         {
-            GetClientResponse clientResponse = new GetClientResponse();
+            var getClientResponse = new GetClientResponse();
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                var query = context.ClientsEntity.Where
-                        (c => c.Email == request.Email).FirstOrDefault();
-                GetClientResponse clientEntity = new GetClientResponse()
-                {
-                    IdClient = query.IdClient,
-                    Name = query.Name,
-                    Surname = query.Surname,
-                    IdentificationNumber = query.IdentificationNumber,
-                    IdTypeIdentification = query.IdTypeIdentification,
-                    HomeStreet = query.HomeStreet,
-                    HomeHeigth = query.HomeHeigth,
-                    HomeDetails = query.HomeDetails,
-                    Departament = query.Departament,
-                    Region = query.Region,
-                    IdPostalCode = query.IdPostalCode,
-                    Email = query.Email,
-                    Phone = query.Phone,
-                    AdicionalInfo = query.AdicionalInfo
-                };
-                clientResponse = clientEntity;
+                var query = context.ClientsEntity
+                            .Where(c => c.IdClient == idClient)
+                            .FirstOrDefault();
+                            GetClientResponse getClientEntity = new GetClientResponse()
+                            {
+                                IdClient = query.IdClient,
+                                Name = query.Name,
+                                Surname = query.Surname,
+                                IdentificationNumber = query.IdentificationNumber,
+                                IdTypeIdentification = query.IdTypeIdentification,
+                                HomeStreet = query.HomeStreet,
+                                HomeHeigth = query.HomeHeigth,
+                                HomeDetails = query.HomeDetails,
+                                Departament = query.Departament,
+                                Region = query.Region,
+                                IdPostalCode = query.IdPostalCode,
+                                Email = query.Email,
+                                Phone = query.Phone,
+                                AdicionalInfo = query.AdicionalInfo
+                            };
+                            getClientResponse = getClientEntity;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductDataAccess.GetById : ERROR : "+ex.Message);
+                throw;
+            }
+            return getClientResponse;
+        }
+
+        public GetClientResponse GetByEmail(string email)
+        {
+            var getClientResponse = new GetClientResponse();
+            try
+            {
+                var query = context.ClientsEntity
+                            .Where(c => c.Email == email)
+                            .FirstOrDefault();
+                            GetClientResponse getClientEntity = new GetClientResponse()
+                            {
+                                IdClient = query.IdClient,
+                                Name = query.Name,
+                                Surname = query.Surname,
+                                IdentificationNumber = query.IdentificationNumber,
+                                IdTypeIdentification = query.IdTypeIdentification,
+                                HomeStreet = query.HomeStreet,
+                                HomeHeigth = query.HomeHeigth,
+                                HomeDetails = query.HomeDetails,
+                                Departament = query.Departament,
+                                Region = query.Region,
+                                IdPostalCode = query.IdPostalCode,
+                                Email = query.Email,
+                                Phone = query.Phone,
+                                AdicionalInfo = query.AdicionalInfo
+                            };
+                            getClientResponse = getClientEntity;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetByEmail : ERROR : "+ex.Message);
                 throw;
             }
-            return clientResponse;
+            return getClientResponse;
         }
+
 
         public GetClientsResponse GetClients()
         {
-            GetClientsResponse clientsResponse = new GetClientsResponse();
+            GetClientsResponse getClientsResponse = new GetClientsResponse();
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
-                var query = context.ClientsEntity.ToList();
-                clientsResponse.ClientsEntities = query;
+                var query = from cl in context.ClientsEntity
+                            select cl;
+                getClientsResponse.ClientsEntities = query.ToList();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ProductDataAccess.GetClients : ERROR : "+ex.Message);
                 throw;
             }
-            return clientsResponse;
+            return getClientsResponse;
         }
 
 
@@ -80,10 +120,9 @@ namespace ProductsAPI.Models
 
         public int PostClient(LoadClientRequest request)
         {
-            int idClient;
+            int idClientResponse;
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 ClientsEntity clientEntity = new ClientsEntity()
                 {
                     Name = request.Name,
@@ -102,21 +141,20 @@ namespace ProductsAPI.Models
                 };
                 context.ClientsEntity.Add(clientEntity);
                 context.SaveChanges();
-                idClient = clientEntity.IdClient;
+                idClientResponse = clientEntity.IdClient;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ClientDataAccess.PostClient : ERROR : "+ex.Message);
                 throw;
             }
-            return idClient;
+            return idClientResponse;
         }
 
         public void LoadNewsLetter(LoadNewsLetterRequest request)
         {
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 NewsletterEntity newsletterEntity = new NewsletterEntity()
                 {
                     Email = request.Email,

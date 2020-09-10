@@ -30,7 +30,16 @@ namespace ProductsAPI.Controllers
 
         [HttpGet]
         [Route("getbyemail")]
-        //Obtiene un cliente por el email
+        //  Obtiene un cliente por el email
+        public GetClientResponse GetById(string request)
+        {
+            var getClientRequest = JsonSerializer.Deserialize<GetClientRequest>(request);
+            return _clientModel.GetById(getClientRequest);
+        }
+
+        [HttpGet]
+        [Route("getbyemail")]
+        //  Obtiene un cliente por el email
         public GetClientResponse GetByEmail(string request)
         {
             var getClientRequest = JsonSerializer.Deserialize<GetClientRequest>(request);
@@ -39,7 +48,7 @@ namespace ProductsAPI.Controllers
 
         [HttpGet]
         [Route("getclients")]
-        //Obtiene toda la lista de clientes
+        //  Obtiene toda la lista de clientes
         public GetClientsResponse GetClients()
         {
             return _clientModel.GetClients();
@@ -54,7 +63,7 @@ namespace ProductsAPI.Controllers
 
         [HttpPost]
         [Route("post")]
-        //Carga un cliente
+        //  Carga un cliente
         public int Post(string request)
         {
             var loadClientRequest = JsonSerializer.Deserialize<LoadClientRequest>(request);
@@ -63,7 +72,7 @@ namespace ProductsAPI.Controllers
 
         [HttpPost]
         [Route("loadnewsletter")]
-        //Carga una adhesion al newsletter
+        //  Carga una adhesion al newsletter
         public int LoadNewsLetter(string request)
         {
             var loadNewsLetterRequest = JsonSerializer.Deserialize<LoadNewsLetterRequest>(request);

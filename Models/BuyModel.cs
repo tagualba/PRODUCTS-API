@@ -9,37 +9,76 @@ namespace ProductsAPI.Models
 {
     public class BuyModel
     {
+        private BuyDataAccess _buyDataAccess;
+        private ClientDataAccess _clientDataAccess;
         
         public BuyModel()
         {
+            _buyDataAccess = new BuyDataAccess();
+            _clientDataAccess = new ClientDataAccess();
         }
 
 
         #region GET
         
 
-        public BuyDetailResponse Detail(LoadBuyDetailRequest request)
+        public GetBuyDetailResponse GetBuy(GetBuyDetailRequest request)
         {
-            var response = new BuyDetailResponse();
-            return response;
-        } 
-    
-        public BuySummaryResponse Summary(BuySummaryRequest request)
-        {
-            var response = new BuySummaryResponse();
-            return response;
+            var getBuyDetailResponse = new GetBuyDetailResponse();
+            try
+            {
+                BuyDataAccess _dataAccess = new BuyDataAccess();
+                getBuyDetailResponse = _dataAccess.GetBuy(request);
+                // Datos de compra generales
+
+                // Datos del detalle
+
+                // Datos del cliente
+                ClientDataAccess _clientDataAccess = new ClientDataAccess();
+                var clientResponse = _clientDataAccess.GetById(getBuyDetailResponse.ClientEntity.IdClient);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BuyModel.GetBuyDetail : ERROR : "+ex.Message);
+                //  Error interno del servidor
+                throw;
+            }
+            return getBuyDetailResponse;
         } 
 
-        public SalesDetailsResponse SalesDetails(SalesDetailsRequest request)
+        public GetBuysSummaryResponse GetBuysSummary()
         {
-            var response = new SalesDetailsResponse();
-            return response;
+            var getBuysSummaryResponse = new GetBuysSummaryResponse();
+            try
+            {
+                BuyDataAccess _dataAccess = new BuyDataAccess();
+                getBuysSummaryResponse = _dataAccess.GetBuysSummary();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BuyModel.GetBuysSummary : ERROR : "+ex.Message);
+                //  Error interno del servidor
+                throw;
+            }
+            return getBuysSummaryResponse;
         } 
 
-        public SalesSummaryResponse SalesSummary(SalesSummaryRequest request)
+        public GetBuysDetailsResponse GetBuysDetails()
         {
-            var response = new SalesSummaryResponse();
-            return response;
+            var getBuysDetailsResponse = new GetBuysDetailsResponse();
+            try
+            {
+                BuyDataAccess _dataAccess = new BuyDataAccess();
+                getBuysDetailsResponse = _dataAccess.GetBuysDetails();
+                //TO DO
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("BuyModel.GetBuysDetails : ERROR : "+ex.Message);
+                //  Error interno del servidor
+                throw;
+            }
+            return getBuysDetailsResponse;
         } 
 
 
@@ -57,11 +96,9 @@ namespace ProductsAPI.Models
                 request.UploadDate = DateTime.Today;
 
                 //  Inserta un nuevo cliente y retorna el id creado
-                ClientDataAccess _clientDataAccess = new ClientDataAccess();
                 request.IdClient = _clientDataAccess.PostClient(request.NewClient);
 
                 //  Inserta una compra y retorna el id creado
-                BuyDataAccess _buyDataAccess = new BuyDataAccess();
                 request.IdBuy = _buyDataAccess.PostBuy(request);
 
                 //  Inserta un detalle de compra

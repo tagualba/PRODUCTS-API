@@ -11,11 +11,13 @@ using ProductsAPI.Data.Context;
 namespace ProductsAPI.Models
 {
 
-    public class ProductDataAcess
+    public class ProductDataAccess
     {
+        private MASFARMACIADEVContext context;
 
-        public ProductDataAcess()
+        public ProductDataAccess()
         {
+            context = new MASFARMACIADEVContext();
         }
 
 
@@ -24,10 +26,9 @@ namespace ProductsAPI.Models
 
         public List<ProductDataAccessResponse> GetFilters()
         {
-            List<ProductDataAccessResponse> _dataAccessResponse = new List<ProductDataAccessResponse>();
+            var _dataAccessResponse = new List<ProductDataAccessResponse>();
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 var query = from p in context.ProductsEntity 
                             join cat in context.CategorysEntity on p.IdCategory equals cat.IdCategory
                             join subcat in context.SubCategorysEntity on p.IdSubCategory equals subcat.IdSubCategory
@@ -36,7 +37,7 @@ namespace ProductsAPI.Models
                             select new
                             {
                                 ProductDataAccessResponse = new ProductDataAccessResponse
-                                    {
+                                {
                                     CategoryUsed = new CategorysEntity
                                     {
                                         IdCategory = p.IdCategory,
@@ -71,37 +72,35 @@ namespace ProductsAPI.Models
             return _dataAccessResponse;
         }
 
-        public ProductResponse GetByID(GetProductRequest request)
+        public GetProductResponse GetByID(GetProductRequest request)
         {
-            ProductResponse productResponse = new ProductResponse();
+            var getProductResponse = new GetProductResponse();
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 var query = from p in context.ProductsEntity
-                            where (p.IdCategory == request.IdProduct)
+                            join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
                             join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
-                            join marca in context.MarcasEntity on p.IdMarca equals marca.IdMarca
+                            join cat in context.CategorysEntity on p.IdCategory equals cat.IdCategory
+                            join subcat in context.SubCategorysEntity on p.IdSubCategory equals subcat.IdSubCategory
+                            where (p.IdCategory == request.IdProduct)
                             select new
                             {
-                                productEntity = new ProductResponse()
-                                {
-                                    IdProduct = p.IdProduct,
-                                    Description = p.Description,
-                                    Name = p.Name,
-                                    IdMarca = p.IdMarca,
-                                    Marca = marca.Description,
-                                    Stock = p.Stock,
-                                    Price = p.Price,
-                                    IdCategory = p.IdCategory,
-                                    IdSubCategory = p.IdSubCategory,
-                                    Recipe = p.Recipe,
-                                    Path = path.Path
-                                }
+                                    ProductEntity = new GetProductResponse
+                                    {
+                                        IdProduct = p.IdProduct,
+                                        Description = p.Description,
+                                        Name = p.Name,
+                                        Marca = m.Description,
+                                        Price = p.Price,
+                                        Category = cat.Description,
+                                        SubCategory = subcat.Description,
+                                        Path = path.Path
+                                    },
                             };
                 if (query != null)
                 {
                     var firstQueryItem = query.FirstOrDefault();
-                    productResponse = firstQueryItem.productEntity;
+                    getProductResponse = firstQueryItem.ProductEntity;
                 }
             }
             catch (Exception ex)
@@ -109,15 +108,14 @@ namespace ProductsAPI.Models
                 Console.WriteLine("ProductDataAccess.GetByID : ERROR : "+ex.Message);
                 throw;
             }
-            return productResponse;
+            return getProductResponse;
         }
 
         public List<ProductDataAccessResponse> GetCatalogAll()
         {   
-            List<ProductDataAccessResponse> _dataAccessResponse = new List<ProductDataAccessResponse>();
+            var _dataAccessResponse = new List<ProductDataAccessResponse>();
             try
-            {  
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+            {
                 var query = from p in context.ProductsEntity
                             join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
                             join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
@@ -127,13 +125,16 @@ namespace ProductsAPI.Models
                             select new
                             {
                                 ProductDataAccessResponse = new ProductDataAccessResponse
-                                    {
-                                    ProductCard = new ProductCardResponse
+                                {
+                                    ProductEntity = new GetProductResponse
                                     {
                                         IdProduct = p.IdProduct,
+                                        Description = p.Description,
                                         Name = p.Name,
                                         Marca = m.Description,
                                         Price = p.Price,
+                                        Category = cat.Description,
+                                        SubCategory = subcat.Description,
                                         Path = path.Path
                                     },
                                     CategoryUsed = new CategorysEntity
@@ -172,10 +173,9 @@ namespace ProductsAPI.Models
 
         public List<ProductDataAccessResponse> GetCatalogSearchBar(GetSearchBarRequest request)
         {   
-            List<ProductDataAccessResponse> _dataAccessResponse = new List<ProductDataAccessResponse>(); 
+            var _dataAccessResponse = new List<ProductDataAccessResponse>(); 
             try
-            {  
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+            {
                 var query = from p in context.ProductsEntity
                             join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
                             join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
@@ -185,13 +185,16 @@ namespace ProductsAPI.Models
                             select new
                             {
                                 ProductDataAccessResponse = new ProductDataAccessResponse
-                                    {
-                                    ProductCard = new ProductCardResponse
+                                {
+                                    ProductEntity = new GetProductResponse
                                     {
                                         IdProduct = p.IdProduct,
+                                        Description = p.Description,
                                         Name = p.Name,
                                         Marca = m.Description,
                                         Price = p.Price,
+                                        Category = cat.Description,
+                                        SubCategory = subcat.Description,
                                         Path = path.Path
                                     },
                                     CategoryUsed = new CategorysEntity
@@ -230,10 +233,9 @@ namespace ProductsAPI.Models
 
         public List<ProductDataAccessResponse> GetCatalogFilter(GetCatalogRequest request)
         {   
-            List<ProductDataAccessResponse> _dataAccessResponse = new List<ProductDataAccessResponse>();
+            var _dataAccessResponse = new List<ProductDataAccessResponse>();
             try
-            {  
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+            {
                 var query = from p in context.ProductsEntity
                             join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
                             join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
@@ -243,13 +245,16 @@ namespace ProductsAPI.Models
                             select new
                             {
                                 ProductDataAccessResponse = new ProductDataAccessResponse
-                                    {
-                                    ProductCard = new ProductCardResponse
+                                {
+                                    ProductEntity = new GetProductResponse
                                     {
                                         IdProduct = p.IdProduct,
+                                        Description = p.Description,
                                         Name = p.Name,
                                         Marca = m.Description,
                                         Price = p.Price,
+                                        Category = cat.Description,
+                                        SubCategory = subcat.Description,
                                         Path = path.Path
                                     },
                                     CategoryUsed = new CategorysEntity
@@ -295,7 +300,6 @@ namespace ProductsAPI.Models
         {   
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 ProductsEntity productEntity = new ProductsEntity()
                 {
                     Description = request.Description,
@@ -322,7 +326,6 @@ namespace ProductsAPI.Models
         {   
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 CategorysEntity categoryEntity = new CategorysEntity()
                 {
                     Description = request.Description
@@ -341,7 +344,6 @@ namespace ProductsAPI.Models
         {   
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 SubCategorysEntity subCategoryEntity = new SubCategorysEntity()
                 {
                     Description = request.Description
@@ -360,7 +362,6 @@ namespace ProductsAPI.Models
         {   
             try
             {
-                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
                 MarcasEntity marcaEntity = new MarcasEntity()
                 {
                     Description = request.Description

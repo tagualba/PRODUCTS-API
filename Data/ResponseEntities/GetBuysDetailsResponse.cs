@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProductsAPI.Data.Request
 {
-    public class SalesSummaryRequest
+    public class GetBuysDetailsResponse
     {
         
     }

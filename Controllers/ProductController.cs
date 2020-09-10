@@ -39,7 +39,7 @@ namespace ProductsAPI.Controllers
         [HttpGet]
         [Route("getbyid")]
         //  Obtiene producto introduciendo el id
-        public ProductResponse GetByID(string request)
+        public GetProductResponse GetByID(string request)
         {
             var getProductRequest = JsonSerializer.Deserialize<GetProductRequest>(request);
             return _productModel.GetByID(getProductRequest);
@@ -80,7 +80,7 @@ namespace ProductsAPI.Controllers
 
         [HttpPost]
         [Route("post")]
-        //Carga un producto
+        //  Carga un producto
         public int Post(string request)
         {   
             var loadProductRequest = JsonSerializer.Deserialize<LoadProductRequest>(request);
@@ -89,7 +89,7 @@ namespace ProductsAPI.Controllers
         
         [HttpPost]
         [Route("loadcategory")]
-        //Carga una categoria
+        //  Carga una categoria
         public int LoadCategory(string request)
         {   
             var loadCategoryRequest = JsonSerializer.Deserialize<LoadCategoryRequest>(request);
@@ -98,7 +98,7 @@ namespace ProductsAPI.Controllers
 
         [HttpPost]
         [Route("loadsubcategory")]
-        //Carga una subcategoria
+        //  Carga una subcategoria
         public int LoadSubCategory(string request)
         {   
             var loadSubCategoryRequest = JsonSerializer.Deserialize<LoadSubCategoryRequest>(request);
@@ -107,7 +107,7 @@ namespace ProductsAPI.Controllers
 
         [HttpPost]
         [Route("loadmarca")]
-        //Carga una subcategoria
+        //  Carga una subcategoria
         public int LoadMarca(string request)
         {   
             var loadMarcaRequest = JsonSerializer.Deserialize<LoadMarcaRequest>(request);

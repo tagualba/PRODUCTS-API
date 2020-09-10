@@ -11,18 +11,18 @@ namespace ProductsAPI.Models.Helpers
         public GetCatalogResponse CreateList (List<ProductDataAccessResponse> _dataAccessResponse)
         {
             GetCatalogResponse getCatalogResponse = new GetCatalogResponse();
-            var listCardsTemp = new List<ProductCardResponse>();
+            var listCardsTemp = new List<GetProductResponse>();
             var listCategorysTemp = new List<CategorysEntity>();
             var listSubCategorysTemp = new List<SubCategorysEntity>();
             var listMarcasTemp = new List<MarcasEntity>();
             foreach (var obj in _dataAccessResponse)
             {
-                listCardsTemp.Add(obj.ProductCard);
+                listCardsTemp.Add(obj.ProductEntity);
                 listCategorysTemp.Add(obj.CategoryUsed);
                 listSubCategorysTemp.Add(obj.SubCategoryUsed);
                 listMarcasTemp.Add(obj.MarcaUsed);
             }
-            getCatalogResponse.ProductsCards = listCardsTemp;
+            getCatalogResponse.ProductsEntities = listCardsTemp.Take(60).ToList();
             getCatalogResponse.CategorysUsed = listCategorysTemp.GroupBy(x => x.IdCategory).Select(y => y.First()).ToList();
             getCatalogResponse.SubCategorysUsed = listSubCategorysTemp.GroupBy(x => x.IdSubCategory).Select(y => y.First()).ToList();
             getCatalogResponse.MarcasUsed = listMarcasTemp.GroupBy(x => x.IdMarca).Select(y => y.First()).ToList();
@@ -72,7 +72,7 @@ namespace ProductsAPI.Models.Helpers
         public GetCatalogResponse CatalogFilter (List<ProductDataAccessResponse> _dataAccessResponse, GetCatalogRequest request)
         {
             GetCatalogResponse getCatalogResponse = new GetCatalogResponse();
-            var listCardsTemp = new List<ProductCardResponse>();
+            var listCardsTemp = new List<GetProductResponse>();
             var listCategorysTemp = new List<CategorysEntity>();
             var listSubCategorysTemp = new List<SubCategorysEntity>();
             var listMarcasTemp = new List<MarcasEntity>();
@@ -81,7 +81,7 @@ namespace ProductsAPI.Models.Helpers
                 //Filtro por categoria
                 if (request.IdFilteredCategories.Contains(obj.CategoryUsed.IdCategory))
                 {
-                    listCardsTemp.Add(obj.ProductCard);
+                    listCardsTemp.Add(obj.ProductEntity);
                     listCategorysTemp.Add(obj.CategoryUsed);
                     listSubCategorysTemp.Add(obj.SubCategoryUsed);
                     listMarcasTemp.Add(obj.MarcaUsed);
@@ -89,7 +89,7 @@ namespace ProductsAPI.Models.Helpers
                 //Filtro por subcategoria
                 if (request.IdFilteredSubCategories.Contains(obj.SubCategoryUsed.IdSubCategory))
                 {
-                    listCardsTemp.Add(obj.ProductCard);
+                    listCardsTemp.Add(obj.ProductEntity);
                     listCategorysTemp.Add(obj.CategoryUsed);
                     listSubCategorysTemp.Add(obj.SubCategoryUsed);
                     listMarcasTemp.Add(obj.MarcaUsed);
@@ -97,14 +97,14 @@ namespace ProductsAPI.Models.Helpers
                 //Filtro por marca
                 if (request.IdFilteredMarcas.Contains(obj.MarcaUsed.IdMarca))
                 {
-                    listCardsTemp.Add(obj.ProductCard);
+                    listCardsTemp.Add(obj.ProductEntity);
                     listCategorysTemp.Add(obj.CategoryUsed);
                     listSubCategorysTemp.Add(obj.SubCategoryUsed);
                     listMarcasTemp.Add(obj.MarcaUsed);
                 }
             };
             //Elimino repetidos y inserto en el objeto
-            getCatalogResponse.ProductsCards = listCardsTemp.GroupBy(x => x.IdProduct).Select(y => y.First()).ToList();
+            getCatalogResponse.ProductsEntities = listCardsTemp.GroupBy(x => x.IdProduct).Select(y => y.First()).ToList();
             getCatalogResponse.CategorysUsed = listCategorysTemp.GroupBy(x => x.IdCategory).Select(y => y.First()).ToList();
             getCatalogResponse.SubCategorysUsed = listSubCategorysTemp.GroupBy(x => x.IdSubCategory).Select(y => y.First()).ToList();
             getCatalogResponse.MarcasUsed = listMarcasTemp.GroupBy(x => x.IdMarca).Select(y => y.First()).ToList();
