@@ -65,6 +65,21 @@ namespace ProductsAPI.Models
             return getClientsResponse;
         }
 
+        public GetIdenTypesResponse GetIdenTypes()
+        {   
+            GetIdenTypesResponse getIdenTypesResponse = new GetIdenTypesResponse();
+            try
+            {
+                getIdenTypesResponse = _clientDataAccess.GetIdenTypes();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductModel.GetIdenTypes : ERROR : "+ex.Message);
+                throw;
+            }
+            return getIdenTypesResponse;
+        }
+
 
         #endregion
 

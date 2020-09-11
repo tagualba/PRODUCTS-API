@@ -29,7 +29,7 @@ namespace ProductsAPI.Controllers
 
 
         [HttpGet]
-        [Route("getbyemail")]
+        [Route("getbyid")]
         //  Obtiene un cliente por el email
         public GetClientResponse GetById(string request)
         {
@@ -52,6 +52,14 @@ namespace ProductsAPI.Controllers
         public GetClientsResponse GetClients()
         {
             return _clientModel.GetClients();
+        }
+
+        [HttpGet]
+        [Route("getidentypes")]
+        //  Obtiene toda la lista de tipos de identificacion
+        public GetIdenTypesResponse GetIdenTypes()
+        {
+            return _clientModel.GetIdenTypes();
         }
 
 

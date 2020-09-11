@@ -50,12 +50,21 @@ namespace ProductsAPI.Models
                             };
                 if (query != null)
                 {
+                    var ListTemp = new List<BuysDetailsEntity>();
                     foreach (var obj in query)
                     {
-                        
+                        if (getBuyDetailResponse == null)
+                        {
+                            getBuyDetailResponse.IdBuy = obj.buyheader.IdBuy;
+                            getBuyDetailResponse.UploadDate = obj.buyheader.UploadDate;
+                            getBuyDetailResponse.TotalAmount = obj.buyheader.TotalAmount;
+                            getBuyDetailResponse.IdOrder = obj.buyheader.IdOrder;
+                            getBuyDetailResponse.ClientEntity.IdClient = obj.buyheader.IdClient;
+                        }
+                        ListTemp.Add(obj.buyDetails);
                     }
+                    getBuyDetailResponse.BuyDetailsEntities = ListTemp;
                 }
-
             }
             catch (Exception ex)
             {

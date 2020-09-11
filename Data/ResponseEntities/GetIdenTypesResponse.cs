@@ -4,8 +4,8 @@ using ProductsAPI.Data.Context.Entitys;
 
 namespace ProductsAPI.Data.Request
 {
-    public class GetClientResponse
+    public class GetIdenTypesResponse
     {
-        public ClientsEntity ClientEntity { get; set; }
+        public List<IdentificationsTypesEntity> IdenTypes { get; set; }
     }
 }

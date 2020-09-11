@@ -32,7 +32,7 @@ namespace ProductsAPI.Models
                 var query = context.ClientsEntity
                             .Where(c => c.IdClient == idClient)
                             .FirstOrDefault();
-                            GetClientResponse getClientEntity = new GetClientResponse()
+                            ClientsEntity clientEntity = new ClientsEntity()
                             {
                                 IdClient = query.IdClient,
                                 Name = query.Name,
@@ -49,7 +49,7 @@ namespace ProductsAPI.Models
                                 Phone = query.Phone,
                                 AdicionalInfo = query.AdicionalInfo
                             };
-                            getClientResponse = getClientEntity;
+                            getClientResponse.ClientEntity = clientEntity;
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace ProductsAPI.Models
                 var query = context.ClientsEntity
                             .Where(c => c.Email == email)
                             .FirstOrDefault();
-                            GetClientResponse getClientEntity = new GetClientResponse()
+                            ClientsEntity clientEntity = new ClientsEntity()
                             {
                                 IdClient = query.IdClient,
                                 Name = query.Name,
@@ -84,7 +84,7 @@ namespace ProductsAPI.Models
                                 Phone = query.Phone,
                                 AdicionalInfo = query.AdicionalInfo
                             };
-                            getClientResponse = getClientEntity;
+                            getClientResponse.ClientEntity = clientEntity;
             }
             catch (Exception ex)
             {
@@ -110,6 +110,23 @@ namespace ProductsAPI.Models
                 throw;
             }
             return getClientsResponse;
+        }
+
+        public GetIdenTypesResponse GetIdenTypes()
+        {
+            GetIdenTypesResponse getIdenTypesResponse = new GetIdenTypesResponse();
+            try
+            {
+                var query = from iden in context.IdentificationsTypesEntity
+                            select iden;
+                getIdenTypesResponse.IdenTypes = query.ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ProductDataAccess.GetIdenTypes : ERROR : "+ex.Message);
+                throw;
+            }
+            return getIdenTypesResponse;
         }
 
 

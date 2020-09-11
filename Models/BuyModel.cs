@@ -27,15 +27,14 @@ namespace ProductsAPI.Models
             var getBuyDetailResponse = new GetBuyDetailResponse();
             try
             {
+                //  Datos de la compra
                 BuyDataAccess _dataAccess = new BuyDataAccess();
                 getBuyDetailResponse = _dataAccess.GetBuy(request);
-                // Datos de compra generales
-
-                // Datos del detalle
 
                 // Datos del cliente
                 ClientDataAccess _clientDataAccess = new ClientDataAccess();
                 var clientResponse = _clientDataAccess.GetById(getBuyDetailResponse.ClientEntity.IdClient);
+                getBuyDetailResponse.ClientEntity = clientResponse.ClientEntity;
             }
             catch (Exception ex)
             {

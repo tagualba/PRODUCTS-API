@@ -29,7 +29,7 @@ namespace ProductsAPI.Controllers
         
 
         [HttpGet]
-        [Route("getbuydetail")]
+        [Route("getbuy")]
         //todo de la venta
         //objeto: cliente
         //        resumen y detalle de venta
