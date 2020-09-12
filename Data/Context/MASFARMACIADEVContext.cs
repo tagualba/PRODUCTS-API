@@ -31,12 +31,14 @@ namespace ProductsAPI.Data.Context
         public virtual DbSet<StatesOrdersEntity> StatesOrdersEntity { get; set; }
         public virtual DbSet<SubCategorysEntity> SubCategorysEntity { get; set; }
         public virtual DbSet<TypesOrdersEntity> TypesOrdersEntity { get; set; }
+        public virtual DbSet<NewsletterEntity> NewsletterEntity { get; set; }
+        public virtual DbSet<MarcasEntity> MarcasEntity { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-20VCMA9\\UNDEFINEDLOCAL;Initial Catalog=MAS-FARMACIA-DEV;User Id=undefinedss;Password=Undefined.s.s.20;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-C8RGQSH\\SQLEXPRESS;Initial Catalog=MAS-FARMACIA-DEV;Trusted_Connection=True");
             }
         }
 
@@ -46,7 +48,7 @@ namespace ProductsAPI.Data.Context
             {
                 entity.HasKey(e => e.IdCategory);
 
-                entity.ToTable("CategorysEntity", "dbo");
+                entity.ToTable("Categorys", "dbo");
 
                 entity.Property(e => e.IdCategory).HasColumnName("id_category");
 
@@ -61,7 +63,7 @@ namespace ProductsAPI.Data.Context
             {
                 entity.HasKey(e => e.IdClient);
 
-                entity.ToTable("ClientsEntity", "dbo");
+                entity.ToTable("Clients", "dbo");
 
                 entity.Property(e => e.IdClient).HasColumnName("id_client");
 
@@ -74,6 +76,21 @@ namespace ProductsAPI.Data.Context
 
                 entity.Property(e => e.HomeStreet)
                     .HasColumnName("home_street")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.HomeDetails)
+                    .HasColumnName("home_details")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Departament)
+                    .HasColumnName("home_departament")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Region)
+                    .HasColumnName("home_region")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
@@ -103,6 +120,11 @@ namespace ProductsAPI.Data.Context
                     .HasColumnName("surname")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.AdicionalInfo)
+                    .HasColumnName("adicional_information")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<IdentificationsTypesEntity>(entity =>
@@ -124,7 +146,7 @@ namespace ProductsAPI.Data.Context
             {
                 entity.HasKey(e => e.IdOrder);
 
-                entity.ToTable("OrdersEntity", "dbo");
+                entity.ToTable("Orders", "dbo");
 
                 entity.Property(e => e.IdOrder).HasColumnName("id_order");
 
@@ -161,13 +183,25 @@ namespace ProductsAPI.Data.Context
             {
                 entity.HasKey(e => e.IdProduct);
 
-                entity.ToTable("ProductsEntity", "dbo");
+                entity.ToTable("Products", "dbo");
 
                 entity.Property(e => e.IdProduct).HasColumnName("id_product");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasColumnName("description")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdMarca)
+                    .IsRequired()
+                    .HasColumnName("id_marca")
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
@@ -190,7 +224,7 @@ namespace ProductsAPI.Data.Context
             {
                 entity.HasKey(e => e.IdBuy);
 
-                entity.ToTable("buy", "dbo");
+                entity.ToTable("buys", "dbo");
 
                 entity.Property(e => e.IdBuy).HasColumnName("id_buy");
 
@@ -211,9 +245,9 @@ namespace ProductsAPI.Data.Context
             {
                 entity.HasKey(e => e.IdBuyDetail);
 
-                entity.ToTable("BuysEntity_details", "dbo");
+                entity.ToTable("Buys_details", "dbo");
 
-                entity.Property(e => e.IdBuyDetail).HasColumnName("id_buy_detail");
+                entity.Property(e => e.IdBuyDetail).HasColumnName("id_buys_details");
 
                 entity.Property(e => e.IdProduct).HasColumnName("id_product");
 
@@ -241,7 +275,7 @@ namespace ProductsAPI.Data.Context
             {
                 entity.HasKey(e => e.IdResource);
 
-                entity.ToTable("ResourcesEntity", "dbo");
+                entity.ToTable("Resources", "dbo");
 
                 entity.Property(e => e.IdResource).HasColumnName("id_resource");
 
@@ -270,7 +304,7 @@ namespace ProductsAPI.Data.Context
             {
                 entity.HasKey(e => e.IdStateOrder);
 
-                entity.ToTable("StatesEntity_OrdersEntity", "dbo");
+                entity.ToTable("States_Orders", "dbo");
 
                 entity.Property(e => e.IdStateOrder).HasColumnName("id_state_order");
 
@@ -283,7 +317,7 @@ namespace ProductsAPI.Data.Context
             {
                 entity.HasKey(e => e.IdSubCategory);
 
-                entity.ToTable("sub_CategorysEntity", "dbo");
+                entity.ToTable("sub_Categorys", "dbo");
 
                 entity.Property(e => e.IdSubCategory).HasColumnName("id_sub_category");
 
@@ -292,13 +326,15 @@ namespace ProductsAPI.Data.Context
                     .HasColumnName("description")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+                
+                entity.Property(e => e.IdCategory).HasColumnName("id_category");
             });
 
             modelBuilder.Entity<TypesOrdersEntity>(entity =>
             {
                 entity.HasKey(e => e.IdTypeOrder);
 
-                entity.ToTable("types_OrdersEntity", "dbo");
+                entity.ToTable("types_Orders", "dbo");
 
                 entity.Property(e => e.IdTypeOrder).HasColumnName("id_type_order");
 
@@ -309,8 +345,43 @@ namespace ProductsAPI.Data.Context
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<MarcasEntity>(entity =>
+            {
+                entity.HasKey(e => e.IdMarca);
+
+                entity.ToTable("marcas", "dbo");
+
+                entity.Property(e => e.IdMarca).HasColumnName("id_marca");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasColumnName("description")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<NewsletterEntity>(entity =>
+            {
+                entity.HasKey(e => e.IdNewsletter);
+
+                entity.ToTable("Newsletters", "dbo");
+
+                entity.Property(e => e.IdNewsletter).HasColumnName("id_newsletter");
+
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Phone)
+                    .HasColumnName("phone")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+            });
             OnModelCreatingPartial(modelBuilder);
         }
+        
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }

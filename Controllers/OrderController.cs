@@ -59,6 +59,7 @@ namespace ProductsAPI.Controllers
         #region POST
         
         [HttpPost]
+        [Route("post")]
         public int Post(string request)
         {
             var loadOrderRequest = JsonSerializer.Deserialize<LoadOrderRequest>(request);

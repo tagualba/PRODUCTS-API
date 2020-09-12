@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProductsAPI.Data.Request;
+using ProductsAPI.Data.Context;
+using ProductsAPI.Data.Context.Entitys;
 using Microsoft.Extensions.Logging;
 
 namespace ProductsAPI.Models
@@ -33,9 +35,23 @@ namespace ProductsAPI.Models
 
         #region POST
         
-        public int Post()
+        public void Insert(LoadRecipeRequest request)
         {
-            return 200;
+            try
+            {
+                MASFARMACIADEVContext context = new MASFARMACIADEVContext();
+                RecipesEntity recipe = new RecipesEntity()
+                {
+                    Path = request.Path
+                };
+                context.RecipesEntity.Add(recipe);
+                context.SaveChanges();   
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("RecipeDataAccess.Insert : ERROR : "+ex.Message);
+                throw;
+            }
         }
         
         #endregion

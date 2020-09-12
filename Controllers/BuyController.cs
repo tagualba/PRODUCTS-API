@@ -12,7 +12,7 @@ using System.Text.Json;
 namespace ProductsAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class BuyController : ControllerBase
     {
         private readonly ILogger<BuyController> _logger;
@@ -24,53 +24,54 @@ namespace ProductsAPI.Controllers
             _buyModel = new BuyModel();
         }
 
+
         #region GET
         
+
         [HttpGet]
-        public BuyDetailResponse Detail(string request)
+        [Route("getbuy")]
+        //todo de la venta
+        //objeto: cliente
+        //        resumen y detalle de venta
+        public GetBuyDetailResponse GetBuy(string request)
         {
-            var buyDetailRequest = JsonSerializer.Deserialize<BuyDetailRequest>(request);
-            return _buyModel.Detail(buyDetailRequest);
+            var getBuyDetailRequest = JsonSerializer.Deserialize<GetBuyDetailRequest>(request);
+            return _buyModel.GetBuy(getBuyDetailRequest);
         } 
 
         [HttpGet]
-        public BuySummaryResponse Summary(string request)
+        [Route("getbuyssummary")]
+        //obtiene buysEntites
+        public GetBuysSummaryResponse GetBuysSummary()
         {
-            var buySummaryRequest = JsonSerializer.Deserialize<BuySummaryRequest>(request);
-            return _buyModel.Summary(buySummaryRequest);
+            return _buyModel.GetBuysSummary();
         } 
 
         [HttpGet]
-        public SalesDetailsResponse SalesDetails(string request)
+        [Route("getbuysdetails")]
+        //obtiene lista de buy entities con sus respectivos buy details
+        public GetBuysDetailsResponse GetBuysDetails()
         {
-            var salesDetailsRequest = JsonSerializer.Deserialize<SalesDetailsRequest>(request);
-            return _buyModel.SalesDetails(salesDetailsRequest);
-        } 
+            return _buyModel.GetBuysDetails();
+        }
 
-        [HttpGet]
-        public SalesSummaryResponse SalesSummary(string request)
-        {
-            var salesSummaryRequest = JsonSerializer.Deserialize<SalesSummaryRequest>(request);
-            return _buyModel.SalesSummary(salesSummaryRequest);
-        } 
 
         #endregion
         
         
         #region POST
 
+
         [HttpPost]
-        public int Post(string request)
+        [Route("postbuy")]
+        // Carga una venta
+        public int PostBuy(string request)
         {
-            var buyRequest = JsonSerializer.Deserialize<BuyRequest>(request);
-            return _buyModel.Post(buyRequest);
+            var loadBuyRequest = JsonSerializer.Deserialize<LoadBuyRequest>(request);
+            return _buyModel.PostBuy(loadBuyRequest);
         }
 
+
         #endregion
-
-
-
-
-
     }
 }

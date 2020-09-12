@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using ProductsAPI.Models;
 using ProductsAPI.Data.Request;
-using System.Text.Json;
 
 namespace ProductsAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ClientController : ControllerBase
     {
 
@@ -24,28 +24,54 @@ namespace ProductsAPI.Controllers
             _clientModel = new ClientModel();
         }   
 
+
         #region GET
 
+
         [HttpGet]
-        public GetClientResponse Get(string request)
+        [Route("getbyid")]
+        //  Obtiene un cliente por el email
+        public GetClientResponse GetById(string request)
         {
             var getClientRequest = JsonSerializer.Deserialize<GetClientRequest>(request);
-            return _clientModel.Get(getClientRequest);
+            return _clientModel.GetById(getClientRequest);
         }
 
         [HttpGet]
-        public GetClientsResponse GetClients(string request)
+        [Route("getbyemail")]
+        //  Obtiene un cliente por el email
+        public GetClientResponse GetByEmail(string request)
         {
-            var getClientsRequest = JsonSerializer.Deserialize<GetClientsRequest>(request);
-            return _clientModel.GetClients(getClientsRequest);
+            var getClientRequest = JsonSerializer.Deserialize<GetClientRequest>(request);
+            return _clientModel.GetByEmail(getClientRequest);
+        }
+
+        [HttpGet]
+        [Route("getclients")]
+        //  Obtiene toda la lista de clientes
+        public GetClientsResponse GetClients()
+        {
+            return _clientModel.GetClients();
+        }
+
+        [HttpGet]
+        [Route("getidentypes")]
+        //  Obtiene toda la lista de tipos de identificacion
+        public GetIdenTypesResponse GetIdenTypes()
+        {
+            return _clientModel.GetIdenTypes();
         }
 
 
         #endregion
 
+
         #region POST
 
+
         [HttpPost]
+        [Route("post")]
+        //  Carga un cliente
         public int Post(string request)
         {
             var loadClientRequest = JsonSerializer.Deserialize<LoadClientRequest>(request);
@@ -53,13 +79,15 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost]
+        [Route("loadnewsletter")]
+        //  Carga una adhesion al newsletter
         public int LoadNewsLetter(string request)
         {
             var loadNewsLetterRequest = JsonSerializer.Deserialize<LoadNewsLetterRequest>(request);
             return _clientModel.LoadNewsLetter(loadNewsLetterRequest);
         }
 
-        #endregion
 
+        #endregion
     }
 }

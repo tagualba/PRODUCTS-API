@@ -35,7 +35,19 @@ namespace ProductsAPI.Models
         
         public int Post(LoadRecipeRequest request)
         {
-            return 200;
+            try
+            {
+                RecipeDataAccess _dataAccess = new RecipeDataAccess();
+                _dataAccess.Insert(request);
+                //Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
+                return 204;  
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("RecipeModel.Post : ERROR : "+ex.Message);
+                //Error interno del servidor
+                return 500;
+            }
         }
         
         #endregion

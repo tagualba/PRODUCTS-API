@@ -5,6 +5,7 @@ namespace ProductsAPI.Data.Request
 {
     public class GetClientRequest
     {
-        
+        public int IdClient { get; set; }
+        public string Email { get; set; }
     }
 }

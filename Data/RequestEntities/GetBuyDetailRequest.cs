@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace ProductsAPI.Data.Request
 {
-    public class LoadClientRequest
+    public class GetBuyDetailRequest
     {
-        
+        public int IdBuy { get; set; }
     }
 }

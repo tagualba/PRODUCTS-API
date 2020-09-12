@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace ProductsAPI.Data.Context.Entitys
+namespace ProductsAPI.Data.Request
 {
-    public partial class ClientsEntity
+    public class LoadClientRequest
     {
-        public int IdClient { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string IdentificationNumber { get; set; }
