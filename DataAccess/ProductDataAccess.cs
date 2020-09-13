@@ -118,7 +118,7 @@ namespace ProductsAPI.Models
             {
                 var query = from p in context.ProductsEntity
                             join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
-                            join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
+                            //join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
                             join cat in context.CategorysEntity on p.IdCategory equals cat.IdCategory
                             join subcat in context.SubCategorysEntity on p.IdSubCategory equals subcat.IdSubCategory
                             where (p.Stock > 0)
@@ -134,8 +134,8 @@ namespace ProductsAPI.Models
                                         Marca = m.Description,
                                         Price = p.Price,
                                         Category = cat.Description,
-                                        SubCategory = subcat.Description,
-                                        Path = path.Path
+                                        SubCategory = subcat.Description//,
+                                        //Path = path.Path
                                     },
                                     CategoryUsed = new CategorysEntity
                                     {

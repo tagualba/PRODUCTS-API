@@ -7,5 +7,6 @@ namespace ProductsAPI.Data.Context.Entitys
     {
         public int IdCategory { get; set; }
         public string Description { get; set; }
+        
     }
 }
