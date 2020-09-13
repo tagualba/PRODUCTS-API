@@ -82,7 +82,7 @@ namespace ProductsAPI.Models
                             join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
                             join cat in context.CategorysEntity on p.IdCategory equals cat.IdCategory
                             join subcat in context.SubCategorysEntity on p.IdSubCategory equals subcat.IdSubCategory
-                            where (p.IdCategory == request.IdProduct)
+                            where (p.IdProduct == request.IdProduct)
                             select new
                             {
                                     ProductEntity = new GetProductResponse
@@ -90,9 +90,13 @@ namespace ProductsAPI.Models
                                         IdProduct = p.IdProduct,
                                         Description = p.Description,
                                         Name = p.Name,
+                                        IdMarca = p.IdMarca,
                                         Marca = m.Description,
                                         Price = p.Price,
+                                        Stock = p.Stock,
+                                        IdCategory = p.IdCategory,
                                         Category = cat.Description,
+                                        IdSubCategory = p.IdSubCategory,
                                         SubCategory = subcat.Description,
                                         Path = path.Path
                                     },
@@ -131,9 +135,13 @@ namespace ProductsAPI.Models
                                         IdProduct = p.IdProduct,
                                         Description = p.Description,
                                         Name = p.Name,
+                                        IdMarca = p.IdMarca,
                                         Marca = m.Description,
                                         Price = p.Price,
+                                        Stock = p.Stock,
+                                        IdCategory = p.IdCategory,
                                         Category = cat.Description,
+                                        IdSubCategory = p.IdSubCategory,
                                         SubCategory = subcat.Description,
                                         Path = path.Path
                                     },
@@ -191,9 +199,13 @@ namespace ProductsAPI.Models
                                         IdProduct = p.IdProduct,
                                         Description = p.Description,
                                         Name = p.Name,
+                                        IdMarca = p.IdMarca,
                                         Marca = m.Description,
                                         Price = p.Price,
+                                        Stock = p.Stock,
+                                        IdCategory = p.IdCategory,
                                         Category = cat.Description,
+                                        IdSubCategory = p.IdSubCategory,
                                         SubCategory = subcat.Description,
                                         Path = path.Path
                                     },
@@ -210,7 +222,7 @@ namespace ProductsAPI.Models
                                     },
                                     MarcaUsed = new MarcasEntity
                                     {
-                                        IdMarca = m.IdMarca,
+                                        IdMarca = p.IdMarca,
                                         Description = m.Description
                                     }
                                 }
@@ -251,9 +263,13 @@ namespace ProductsAPI.Models
                                         IdProduct = p.IdProduct,
                                         Description = p.Description,
                                         Name = p.Name,
+                                        IdMarca = p.IdMarca,
                                         Marca = m.Description,
                                         Price = p.Price,
+                                        Stock = p.Stock,
+                                        IdCategory = p.IdCategory,
                                         Category = cat.Description,
+                                        IdSubCategory = p.IdSubCategory,
                                         SubCategory = subcat.Description,
                                         Path = path.Path
                                     },

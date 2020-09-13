@@ -30,9 +30,7 @@ namespace ProductsAPI.Controllers
 
         [HttpGet]
         [Route("getbuy")]
-        //todo de la venta
-        //objeto: cliente
-        //        resumen y detalle de venta
+        //  Obtiene el cliente, la venta y el detalle
         public GetBuyDetailResponse GetBuy(string request)
         {
             var getBuyDetailRequest = JsonSerializer.Deserialize<GetBuyDetailRequest>(request);
@@ -41,19 +39,11 @@ namespace ProductsAPI.Controllers
 
         [HttpGet]
         [Route("getbuyssummary")]
-        //obtiene buysEntites
+        //  Obtiene todos los headers de compra
         public GetBuysSummaryResponse GetBuysSummary()
         {
             return _buyModel.GetBuysSummary();
         } 
-
-        [HttpGet]
-        [Route("getbuysdetails")]
-        //obtiene lista de buy entities con sus respectivos buy details
-        public GetBuysDetailsResponse GetBuysDetails()
-        {
-            return _buyModel.GetBuysDetails();
-        }
 
 
         #endregion
@@ -64,7 +54,11 @@ namespace ProductsAPI.Controllers
 
         [HttpPost]
         [Route("postbuy")]
-        // Carga una venta
+        //  Carga una venta
+        //  Client:
+        //  TotalAmount:
+        //  TypeOder: 1-Sucursal 2-Envio (Ej)
+        //  Detail: {   idproduct - quantity    }
         public int PostBuy(string request)
         {
             var loadBuyRequest = JsonSerializer.Deserialize<LoadBuyRequest>(request);

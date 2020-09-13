@@ -76,35 +76,28 @@ namespace ProductsAPI.Models.Helpers
             var listCategorysTemp = new List<CategorysEntity>();
             var listSubCategorysTemp = new List<SubCategorysEntity>();
             var listMarcasTemp = new List<MarcasEntity>();
-            foreach (var obj in _dataAccessResponse)
+            var tempObj = _dataAccessResponse;
+            if (request.IdFilteredCategories.Count > 0)
             {
-                //Filtro por categoria
-                if (request.IdFilteredCategories.Contains(obj.CategoryUsed.IdCategory))
-                {
-                    listCardsTemp.Add(obj.ProductEntity);
-                    listCategorysTemp.Add(obj.CategoryUsed);
-                    listSubCategorysTemp.Add(obj.SubCategoryUsed);
-                    listMarcasTemp.Add(obj.MarcaUsed);
-                }
-                //Filtro por subcategoria
-                if (request.IdFilteredSubCategories.Contains(obj.SubCategoryUsed.IdSubCategory))
-                {
-                    listCardsTemp.Add(obj.ProductEntity);
-                    listCategorysTemp.Add(obj.CategoryUsed);
-                    listSubCategorysTemp.Add(obj.SubCategoryUsed);
-                    listMarcasTemp.Add(obj.MarcaUsed);
-                }
-                //Filtro por marca
-                if (request.IdFilteredMarcas.Contains(obj.MarcaUsed.IdMarca))
-                {
-                    listCardsTemp.Add(obj.ProductEntity);
-                    listCategorysTemp.Add(obj.CategoryUsed);
-                    listSubCategorysTemp.Add(obj.SubCategoryUsed);
-                    listMarcasTemp.Add(obj.MarcaUsed);
-                }
-            };
-            //Elimino repetidos y inserto en el objeto
-            getCatalogResponse.ProductsEntities = listCardsTemp.GroupBy(x => x.IdProduct).Select(y => y.First()).ToList();
+                tempObj = tempObj.Select(P => P).Where(P => request.IdFilteredCategories.Contains(P.ProductEntity.IdCategory)).ToList();
+            }
+            if (request.IdFilteredSubCategories.Count > 0)
+            {
+                tempObj = tempObj.Select(P => P).Where(P => request.IdFilteredSubCategories.Contains(P.ProductEntity.IdSubCategory)).ToList();
+            }
+            if (request.IdFilteredMarcas.Count > 0)
+            {
+                tempObj = tempObj.Select(P => P).Where(P => request.IdFilteredMarcas.Contains(P.ProductEntity.IdMarca)).ToList();
+            }
+            foreach (var obj in tempObj)
+            {
+                listCardsTemp.Add(obj.ProductEntity);
+                listCategorysTemp.Add(obj.CategoryUsed);
+                listSubCategorysTemp.Add(obj.SubCategoryUsed);
+                listMarcasTemp.Add(obj.MarcaUsed);
+            }
+            //Elimino repetidos y inserto en el objetos
+            getCatalogResponse.ProductsEntities = listCardsTemp.Take(60).GroupBy(x => x.IdProduct).Select(y => y.First()).ToList();
             getCatalogResponse.CategorysUsed = listCategorysTemp.GroupBy(x => x.IdCategory).Select(y => y.First()).ToList();
             getCatalogResponse.SubCategorysUsed = listSubCategorysTemp.GroupBy(x => x.IdSubCategory).Select(y => y.First()).ToList();
             getCatalogResponse.MarcasUsed = listMarcasTemp.GroupBy(x => x.IdMarca).Select(y => y.First()).ToList();

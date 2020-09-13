@@ -53,13 +53,13 @@ namespace ProductsAPI.Models
                     var ListTemp = new List<BuysDetailsEntity>();
                     foreach (var obj in query)
                     {
-                        if (getBuyDetailResponse == null)
+                        if (getBuyDetailResponse.IdClient == 0)
                         {
                             getBuyDetailResponse.IdBuy = obj.buyheader.IdBuy;
                             getBuyDetailResponse.UploadDate = obj.buyheader.UploadDate;
                             getBuyDetailResponse.TotalAmount = obj.buyheader.TotalAmount;
                             getBuyDetailResponse.IdOrder = obj.buyheader.IdOrder;
-                            getBuyDetailResponse.ClientEntity.IdClient = obj.buyheader.IdClient;
+                            getBuyDetailResponse.IdClient = obj.buyheader.IdClient;
                         }
                         ListTemp.Add(obj.buyDetails);
                     }
@@ -89,14 +89,6 @@ namespace ProductsAPI.Models
                 throw;
             }
             return getBuysSummaryResponse;
-        } 
-
-        public GetBuysDetailsResponse GetBuysDetails()
-        {
-            var response = new GetBuysDetailsResponse();
-            // logic here
-            // select a la tabla details
-            return response;
         } 
 
 
