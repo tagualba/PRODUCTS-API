@@ -11,6 +11,7 @@ namespace ProductsAPI.Data.Request
         public DateTime UploadDate { get; set; }
         public decimal TotalAmount { get; set; }
         public int IdOrder { get; set; }
+        public int  IdClient { get; set; } 
         public List  <BuysDetailsEntity> BuyDetailsEntities { get; set; }
     }
 }

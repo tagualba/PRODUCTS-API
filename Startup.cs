@@ -43,8 +43,6 @@ namespace ProductsAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
-
             app.UseCors("CorsPolicy");
         
             app.UseHttpsRedirection();
@@ -52,6 +50,18 @@ namespace ProductsAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // app.Use(async (context, next) =>
+            // {
+            //     context.Response.Headers.Add("Header-name", "Header-Value");
+            //     await next();
+            // });
+
+            // app.Use(async (context, next) =>
+            // {
+            //     context.Request.Headers["connection"].ToString();
+            //     await next();
+            // });
 
             app.UseEndpoints(endpoints =>
             {

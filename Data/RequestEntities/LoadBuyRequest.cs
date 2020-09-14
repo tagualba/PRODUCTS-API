@@ -10,6 +10,7 @@ namespace ProductsAPI.Data.Request
         public DateTime UploadDate { get; set; }
         public decimal TotalAmount { get; set; }
         public int IdClient { get; set; }
+        public int IdTypeOrder { get; set; }
         public int IdOrder { get; set; }
         public int IdBuy { get; set; } 
         public List  <LoadBuyDetailRequest> BuyDetail { get; set; }
