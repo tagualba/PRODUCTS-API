@@ -33,12 +33,13 @@ namespace ProductsAPI.Data.Context
         public virtual DbSet<TypesOrdersEntity> TypesOrdersEntity { get; set; }
         public virtual DbSet<NewsletterEntity> NewsletterEntity { get; set; }
         public virtual DbSet<MarcasEntity> MarcasEntity { get; set; }
+        public virtual DbSet<EmailsFormatEntity> EmailsFormatEntity { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-20VCMA9\\UNDEFINEDLOCAL;Initial Catalog=MAS-FARMACIA-DEV;User ID=undefinedss;Password=Undefined.s.s.20;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-C8RGQSH\\SQLEXPRESS;Initial Catalog=MAS-FARMACIA-DEV;Trusted_Connection=True");
             }
         }
 
@@ -357,6 +358,20 @@ namespace ProductsAPI.Data.Context
                     .IsRequired()
                     .HasColumnName("description")
                     .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<EmailsFormatEntity>(entity =>
+            {
+                entity.HasKey(e => e.IdState);
+
+                entity.ToTable("emails_format", "dbo");
+
+                entity.Property(e => e.IdState).HasColumnName("id_state");
+
+                entity.Property(e => e.Format)
+                    .IsRequired()
+                    .HasColumnName("format")
                     .IsUnicode(false);
             });
 

@@ -11,7 +11,7 @@ namespace ProductsAPI.Data.Request
 
         public class CategorysCatalog
         {
-            public string Id { get; set; }
+            public int IdCategory { get; set; }
             public string Description { get; set; }
             public List<SubCategorysEntity> SubCategorys { get; set; }
             

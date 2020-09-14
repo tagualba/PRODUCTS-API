@@ -22,10 +22,29 @@ namespace ProductsAPI.Models.Helpers
                 listSubCategorysTemp.Add(obj.SubCategoryUsed);
                 listMarcasTemp.Add(obj.MarcaUsed);
             }
-            getCatalogResponse.ProductsEntities = listCardsTemp.Take(60).ToList();
-            getCatalogResponse.CategorysUsed = listCategorysTemp.GroupBy(x => x.IdCategory).Select(y => y.First()).ToList();
-            getCatalogResponse.SubCategorysUsed = listSubCategorysTemp.GroupBy(x => x.IdSubCategory).Select(y => y.First()).ToList();
-            getCatalogResponse.MarcasUsed = listMarcasTemp.GroupBy(x => x.IdMarca).Select(y => y.First()).ToList();
+            getCatalogResponse.Products = listCardsTemp.Take(60).GroupBy(x => x.IdProduct).Select(y => y.First()).ToList();
+            var listCategorysUniques = listCategorysTemp.GroupBy(x => x.IdCategory).Select(y => y.First()).ToList();
+            var listSubCategorysUniques = listSubCategorysTemp.GroupBy(x => x.IdSubCategory).Select(y => y.First()).ToList();
+            getCatalogResponse.Marcas = listMarcasTemp.GroupBy(x => x.IdMarca).Select(y => y.First()).ToList();
+            
+            var listTrees = new List<GetCatalogResponse.CategorysCatalog>();
+            foreach (var cat in listCategorysUniques)
+            {
+                var categoryTree = new GetCatalogResponse.CategorysCatalog();
+                categoryTree.IdCategory = cat.IdCategory;
+                categoryTree.Description = cat.Description;
+                var listSubCategorysTree = new List<SubCategorysEntity>();
+                foreach (var subcat in listSubCategorysUniques)
+                {
+                    if (subcat.IdCategory == cat.IdCategory)
+                    {
+                        listSubCategorysTree.Add(subcat);
+                    }
+                }
+                categoryTree.SubCategorys = listSubCategorysTree;
+                listTrees.Add(categoryTree);
+            }
+            getCatalogResponse.Categorys = listTrees;
             return getCatalogResponse;
         }
 
@@ -96,11 +115,29 @@ namespace ProductsAPI.Models.Helpers
                 listSubCategorysTemp.Add(obj.SubCategoryUsed);
                 listMarcasTemp.Add(obj.MarcaUsed);
             }
-            //Elimino repetidos y inserto en el objetos
-            getCatalogResponse.ProductsEntities = listCardsTemp.Take(60).GroupBy(x => x.IdProduct).Select(y => y.First()).ToList();
-            getCatalogResponse.CategorysUsed = listCategorysTemp.GroupBy(x => x.IdCategory).Select(y => y.First()).ToList();
-            getCatalogResponse.SubCategorysUsed = listSubCategorysTemp.GroupBy(x => x.IdSubCategory).Select(y => y.First()).ToList();
-            getCatalogResponse.MarcasUsed = listMarcasTemp.GroupBy(x => x.IdMarca).Select(y => y.First()).ToList();
+            getCatalogResponse.Products = listCardsTemp.Take(60).GroupBy(x => x.IdProduct).Select(y => y.First()).ToList();
+            var listCategorysUniques = listCategorysTemp.GroupBy(x => x.IdCategory).Select(y => y.First()).ToList();
+            var listSubCategorysUniques = listSubCategorysTemp.GroupBy(x => x.IdSubCategory).Select(y => y.First()).ToList();
+            getCatalogResponse.Marcas = listMarcasTemp.GroupBy(x => x.IdMarca).Select(y => y.First()).ToList();
+            
+            var listTrees = new List<GetCatalogResponse.CategorysCatalog>();
+            foreach (var cat in listCategorysUniques)
+            {
+                var categoryTree = new GetCatalogResponse.CategorysCatalog();
+                categoryTree.IdCategory = cat.IdCategory;
+                categoryTree.Description = cat.Description;
+                var listSubCategorysTree = new List<SubCategorysEntity>();
+                foreach (var subcat in listSubCategorysUniques)
+                {
+                    if (subcat.IdCategory == cat.IdCategory)
+                    {
+                        listSubCategorysTree.Add(subcat);
+                    }
+                }
+                categoryTree.SubCategorys = listSubCategorysTree;
+                listTrees.Add(categoryTree);
+            }
+            getCatalogResponse.Categorys = listTrees;
             return getCatalogResponse;
         }
     }
