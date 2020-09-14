@@ -28,11 +28,16 @@ namespace ProductsAPI.Models
             {
                 var query = from or in context.OrdersEntity
                             join stat in context.StatesOrdersEntity on or.IdOrder equals stat.IdOrder
+                            join buy in context.BuysEntity on or.IdOrder equals buy.IdOrder
+                            join cl in context.ClientsEntity on buy.IdClient equals cl.IdClient
                             where (or.IdOrder == IdOrder)
                             select new 
                             {
                                 orderDetail = new GetOrderDetailResponse
                                 {
+                                    ClientName = cl.Name,
+                                    ClientSurname = cl.Surname,
+                                    ClientEmail = cl.Email,
                                     IdOrder = or.IdOrder,
                                     IdOrderType = or.IdTypeOrder,
                                     IdState = stat.IdState,
@@ -41,16 +46,7 @@ namespace ProductsAPI.Models
                             };
                 foreach (var obj in query)
                 {
-                    if (obj.orderDetail == null)
-                    {
-                        getOrderDetailResponse.IdState = 0;
-                        getOrderDetailResponse.StateDescription = "Numero de orden equivocado";
-                    }
-                    else
-                    {
-                        getOrderDetailResponse = obj.orderDetail;
-                    }
-
+                    getOrderDetailResponse = obj.orderDetail;
                 }
             }
             catch (Exception ex)
@@ -107,11 +103,30 @@ namespace ProductsAPI.Models
             return idOrderResponse;
         }
 
-        public void NextStateOrder (int IdStateOrder)
+        public void PostOrderState(int idOrder)
         {
             try
             {
-                StatesOrdersEntity actualState = context.StatesOrdersEntity.Find(IdStateOrder);
+                StatesOrdersEntity stateOrder = new StatesOrdersEntity()
+                {
+                    IdOrder = idOrder,
+                    IdState = 1
+                };
+                context.StatesOrdersEntity.Add(stateOrder);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("OrderDataAccess.PostOrderState : ERROR : "+ex.Message);
+                throw;
+            }
+        }
+
+        public void NextStateOrder (GetOrderDetailResponse request)
+        {
+            try
+            {
+                StatesOrdersEntity actualState = context.StatesOrdersEntity.Find(request.IdStateOrder);
                 if (actualState != null)
                 {
                     actualState.IdState = actualState.IdState + 1;

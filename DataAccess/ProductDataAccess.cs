@@ -122,7 +122,7 @@ namespace ProductsAPI.Models
             {
                 var query = from p in context.ProductsEntity
                             join m in context.MarcasEntity on p.IdMarca equals m.IdMarca
-                            //join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
+                            join path in context.ResourcesEntity on p.IdResoruce equals path.IdResource
                             join cat in context.CategorysEntity on p.IdCategory equals cat.IdCategory
                             join subcat in context.SubCategorysEntity on p.IdSubCategory equals subcat.IdSubCategory
                             where (p.Stock > 0)
@@ -301,7 +301,7 @@ namespace ProductsAPI.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ProductDataAccess.GetCatalogAll : ERROR : "+ex.Message);
+                Console.WriteLine("ProductDataAccess.GetCatalogFilter : ERROR : "+ex.Message);
                 throw;
             }
             return _dataAccessResponse;

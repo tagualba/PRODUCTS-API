@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using ProductsAPI.Data.Request;
+using ProductsAPI.Models.Helpers;
 
 namespace ProductsAPI.Models
 {
@@ -13,6 +14,7 @@ namespace ProductsAPI.Models
         private ClientDataAccess _clientDataAccess;
         private OrderDataAccess _orderDataAccess;
         private OrderModel _orderModel;
+        private BuyHelper _buyHelper;
         
         public BuyModel()
         {
@@ -20,6 +22,7 @@ namespace ProductsAPI.Models
             _clientDataAccess = new ClientDataAccess();
             _orderDataAccess = new OrderDataAccess();
             _orderModel = new OrderModel();
+            _buyHelper = new BuyHelper();
         }
 
 
@@ -74,23 +77,19 @@ namespace ProductsAPI.Models
         {
             try
             {
-                //  Asigno Fecha de hoy
                 request.UploadDate = DateTime.Today;
-
-                //  Inserta un nuevo cliente y retorna el id creado
+                //  Insertar client
                 request.IdClient = _clientDataAccess.PostClient(request.NewClient);
 
-                //  Insertar el tipo de order para obtener el idOrder de la compra
+                //  Insertar el tipo de order y setea el estado en 1 (pendiente)
                 request.IdOrder = _orderDataAccess.PostOrder(request.IdTypeOrder);
+                _orderDataAccess.PostOrderState(request.IdOrder);
 
-                //  Inserta una compra y retorna el id creado
+                //  Inserta una compra y el detalle 
                 request.IdBuy = _buyDataAccess.PostBuy(request);
-
-                //  Inserta un detalle de compra
                 _buyDataAccess.PostBuyDetail(request);
 
-                //  Seteo el stateorder en 1 -> Pedido pendiente
-                _orderModel.NextStateOrder(request.IdOrder);
+                _buyHelper.SendFirstEmail(request);
 
                 //  Retorna 204: La peticion ha sido manejada con exito y la respuesta no tiene contenido
                 return 204;

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using ProductsAPI.Data.Request;
+using ProductsAPI.Models.Helpers;
+using Email.Service;
 
 namespace ProductsAPI.Models
 {
@@ -12,9 +14,11 @@ namespace ProductsAPI.Models
     {
 
         private OrderDataAccess _orderDataAccess;
+        private OrderHelper _orderHelper;
         public OrderModel()
         {
             _orderDataAccess = new OrderDataAccess();
+            _orderHelper = new OrderHelper();
         }
 
         #region GET
@@ -55,27 +59,23 @@ namespace ProductsAPI.Models
         //  Avanza el state de una order
         public void NextStateOrder (int idOrder)
         {
+            // TODO
             var getOrderDetailResponse = _orderDataAccess.GetOrderDetail(idOrder);
             var orderState = getOrderDetailResponse.IdState;
             switch (orderState)
             {
-                case 0:
-                    _orderDataAccess.NextStateOrder(getOrderDetailResponse.IdStateOrder);
-                    //  Primer paso - state 0 a 1
-                    //  Primer email su compra esta siendo procesada
-                    break;
                 case 1:
-                    _orderDataAccess.NextStateOrder(getOrderDetailResponse.IdStateOrder);
-                    //  state 1 a 2
-                    //  Segundo email, su compra se encuentra en proceso
+                    _orderDataAccess.NextStateOrder(getOrderDetailResponse);
+                    //  introducir el email, el nombre y apellido, resumen y cuerpo del mensaje
+                    //_orderHelper.SendNextEmail();
                     break;
                 case 2:
-                    _orderDataAccess.NextStateOrder(getOrderDetailResponse.IdStateOrder);
-                    //  state 2 a 3
-                    //  Muchas gracias por comprar
+                    _orderDataAccess.NextStateOrder(getOrderDetailResponse);
+                    //  state 1 a 2
+                    //  Segundo email, su compra se encuentra en proceso
+                    //_orderHelper.SendNextEmail();
                     break;
                 case 3:
-                    //  DO NOTHING
                     break;
             }
         }
