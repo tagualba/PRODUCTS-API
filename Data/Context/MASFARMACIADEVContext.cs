@@ -39,7 +39,7 @@ namespace ProductsAPI.Data.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-C8RGQSH\\SQLEXPRESS;Initial Catalog=MAS-FARMACIA-DEV;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Data Source=31.220.51.209,1433;Initial Catalog=MAS-FARMACIA-DEV;User ID=sa;Password=Undefined.2020");
             }
         }
 
@@ -208,7 +208,7 @@ namespace ProductsAPI.Data.Context
 
                 entity.Property(e => e.IdCategory).HasColumnName("id_category");
 
-                entity.Property(e => e.IdResoruce).HasColumnName("id_resoruce");
+                entity.Property(e => e.IdResoruce).HasColumnName("id_resource");
 
                 entity.Property(e => e.IdSubCategory).HasColumnName("id_sub_category");
 
